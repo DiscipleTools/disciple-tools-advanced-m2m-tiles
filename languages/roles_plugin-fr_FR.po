@@ -1,15 +1,15 @@
-#, fuzzy
 msgid ""
 msgstr ""
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: Disciple Tools - roles\n"
-"POT-Creation-Date: 2020-05-06 18:45+0100\n"
-"PO-Revision-Date: 2018-01-29 05:53-0700\n"
+"POT-Creation-Date: 2020-05-07 10:13+0100\n"
+"PO-Revision-Date: 2020-05-07 10:13+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 2.3\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
@@ -26,49 +26,53 @@ msgstr ""
 
 #: includes/dt-hooks.php:11 includes/dt-hooks.php:17
 msgid "Follow-Up"
-msgstr ""
+msgstr "Suivit"
 
 #: includes/dt-hooks.php:13
 msgid "Reason Assigned To"
-msgstr ""
+msgstr "Raison assigné a"
 
 #: includes/dt-hooks.php:21
 msgid "Digital Response"
-msgstr ""
+msgstr "Réponse Digital"
 
 #: includes/dt-hooks.php:25
 msgid "Dispatch"
-msgstr ""
+msgstr "Répartition"
 
 #: includes/rest-api.php:50
 msgid "No permission"
-msgstr ""
+msgstr "Pas de permission"
 
 #: includes/tiles.php:22
 msgid "All"
-msgstr ""
+msgstr "Tout"
 
 #: includes/tiles.php:23
 msgid "Ready"
-msgstr ""
+msgstr "Pret"
 
 #: includes/tiles.php:24
 msgid "Recent"
-msgstr ""
+msgstr "Récent"
 
 #: includes/tiles.php:25
 msgid "Location"
-msgstr ""
+msgstr "Emplacement"
 
-#: includes/tiles.php:38
+#: includes/tiles.php:26
+msgid "Assign"
+msgstr "Assigner"
+
+#: includes/tiles.php:39
 msgid "Assign For"
-msgstr ""
+msgstr "Assigner pour"
 
-#: includes/tiles.php:87
+#: includes/tiles.php:88
 msgid "Search"
-msgstr ""
+msgstr "Chercher"
 
-#: includes/tiles.php:95
+#: includes/tiles.php:96
 msgctxt "input field placeholder"
 msgid "Search Users"
-msgstr ""
+msgstr "Chercher un utilisateur"
