@@ -24,7 +24,8 @@ class DT_Roles_Banners {
                     "recent" => __( "Recent", 'roles_plugin' ),
                     "location" => __( "Location", 'roles_plugin' ),
                     "assign" => __( "Assign", 'roles_plugin' ),
-                ]
+                ],
+                "dispatcher_id" => dt_get_base_user( true )
             ]
         );
     }
@@ -132,6 +133,35 @@ class DT_Roles_Banners {
 
             </style>
             <?php
+        }
+
+        /**
+         * My actions tile
+         */
+        if ( dt_current_user_has_role( 'marketer' ) ) {
+            ?>
+            <section class="small-12 grid-y grid-margin-y cell dr-tile">
+                <div class="bordered-box">
+                    <div style="display: flex">
+                        <div>
+                            <h4 class="section-header"><?php esc_html_e( 'My actions', 'roles_plugin' ); ?> <span id="dr-tile-loader" style="display: inline-block; margin-left: 10px; margin-right: 10px" class="loading-spinner"></span></h4>
+                        </div>
+                        <div class="action-buttons">
+                            <button id="mark_dispatch_needed" class="button hollow"><?php esc_html_e( 'Ready for Dispatch', 'roles_plugin' ); ?></button>
+                            <button id="claim" class="button hollow"><?php esc_html_e( 'Assign to me for follow-up', 'roles_plugin' ); ?></button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <style type="text/css">
+                .action-buttons .button{
+                    margin-bottom: 0;
+                }
+            </style>
+
+
+            <?php
+
         }
     }
 }

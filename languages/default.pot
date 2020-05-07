@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: Disciple Tools - roles\n"
-"POT-Creation-Date: 2020-05-06 18:45+0100\n"
+"POT-Creation-Date: 2020-05-07 15:46+0100\n"
 "PO-Revision-Date: 2018-01-29 05:53-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -24,23 +24,23 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-2: disciple-tools-plugin.php\n"
 "X-Poedit-SearchPathExcluded-3: includes/admin\n"
 
-#: includes/dt-hooks.php:11 includes/dt-hooks.php:17
-msgid "Follow-Up"
-msgstr ""
-
-#: includes/dt-hooks.php:13
+#: includes/dt-hooks.php:12
 msgid "Reason Assigned To"
 msgstr ""
 
-#: includes/dt-hooks.php:21
+#: includes/dt-hooks.php:16
+msgid "Follow-Up"
+msgstr ""
+
+#: includes/dt-hooks.php:20
 msgid "Digital Response"
 msgstr ""
 
-#: includes/dt-hooks.php:25
+#: includes/dt-hooks.php:24
 msgid "Dispatch"
 msgstr ""
 
-#: includes/rest-api.php:50
+#: includes/rest-api.php:44
 msgid "No permission"
 msgstr ""
 
@@ -60,15 +60,31 @@ msgstr ""
 msgid "Location"
 msgstr ""
 
-#: includes/tiles.php:38
+#: includes/tiles.php:26
+msgid "Assign"
+msgstr ""
+
+#: includes/tiles.php:40
 msgid "Assign For"
 msgstr ""
 
-#: includes/tiles.php:87
+#: includes/tiles.php:89
 msgid "Search"
 msgstr ""
 
-#: includes/tiles.php:95
+#: includes/tiles.php:97
 msgctxt "input field placeholder"
 msgid "Search Users"
+msgstr ""
+
+#: includes/tiles.php:147
+msgid "My actions"
+msgstr ""
+
+#: includes/tiles.php:150
+msgid "Ready for Dispatch"
+msgstr ""
+
+#: includes/tiles.php:151
+msgid "Assign to me for follow-up"
 msgstr ""
