@@ -61,7 +61,7 @@ function roles_plugin() {
         return DT_Roles_Plugin::get_instance();
     }
 }
-add_action( 'after_setup_theme', 'DT_Roles_Plugin' );
+add_action( 'after_setup_theme', 'roles_plugin' );
 
 /**
  * Singleton class for setting up the plugin.

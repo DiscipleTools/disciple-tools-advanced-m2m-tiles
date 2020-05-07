@@ -36,7 +36,7 @@ class DT_Roles_Banners {
             <section class="small-12 grid-y grid-margin-y cell dispatcher-tile">
                 <div class="bordered-box">
                     <div class="cell dt-filter-tabs">
-                        <h4 class="section-header"><?php esc_html_e( 'Assign For', 'roles_plugin' ); ?> <span id="dispatch-tile-loader" style="display: inline-block" class="loading-spinner"></span>
+                        <h4 class="section-header"><?php esc_html_e( 'Assign For', 'roles_plugin' ); ?> <span id="dispatch-tile-loader" style="display: inline-block; margin-left: 10px" class="loading-spinner"></span>
                             <button class="section-chevron chevron_down">
                                 <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
                             </button>
