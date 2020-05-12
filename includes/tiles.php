@@ -31,7 +31,8 @@ class DT_Roles_Banners {
     }
 
     public function dt_banners( $contact ){
-        if ( dt_current_user_has_role( 'dispatcher' ) ){
+        $roles_settings = get_option( "dt_roles_settings", [] );
+        if ( dt_current_user_has_role( 'dispatcher' ) && isset( $roles_settings["assigned_to"]["enabled"] ) && $roles_settings["assigned_to"]["enabled"] !== false ) {
             $field_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" )["fields"];
             ?>
             <section class="small-12 grid-y grid-margin-y cell dispatcher-tile">
@@ -138,8 +139,7 @@ class DT_Roles_Banners {
         /**
          * My actions tile
          */
-        if ( dt_current_user_has_role( 'marketer' ) ) {
-            ?>
+        if ( dt_current_user_has_role( 'marketer' ) && isset( $roles_settings["my_actions"]["enabled"] ) && $roles_settings["my_actions"]["enabled"] !== false ) : ?>
             <section class="small-12 grid-y grid-margin-y cell dr-tile">
                 <div class="bordered-box">
                     <div style="display: flex">
@@ -147,22 +147,21 @@ class DT_Roles_Banners {
                             <h4 class="section-header"><?php esc_html_e( 'My actions', 'roles_plugin' ); ?> <span id="dr-tile-loader" style="display: inline-block; margin-left: 10px; margin-right: 10px" class="loading-spinner"></span></h4>
                         </div>
                         <div class="action-buttons">
+                            <?php if ( dt_current_user_has_role( 'marketer' ) ) : ?>
                             <button id="mark_dispatch_needed" class="button hollow"><?php esc_html_e( 'Ready for Dispatch', 'roles_plugin' ); ?></button>
-                            <button id="claim" class="button hollow"><?php esc_html_e( 'Assign to me for follow-up', 'roles_plugin' ); ?></button>
+                            <button id="claim" class="button hollow"><?php esc_html_e( 'Claim for follow-up', 'roles_plugin' ); ?></button>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
             </section>
+
             <style type="text/css">
                 .action-buttons .button{
                     margin-bottom: 0;
                 }
             </style>
-
-
-            <?php
-
-        }
+        <?php endif;
     }
 }
 new DT_Roles_Banners();

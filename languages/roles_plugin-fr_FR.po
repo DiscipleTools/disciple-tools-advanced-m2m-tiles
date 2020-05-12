@@ -86,5 +86,5 @@ msgid "Ready for Dispatch"
 msgstr "Pret pour répartition"
 
 #: includes/tiles.php:151
-msgid "Assign to me for follow-up"
+msgid "Claim for follow-up"
 msgstr "M'assigner pour suivit"
