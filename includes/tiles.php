@@ -3,18 +3,21 @@
 
 class DT_Roles_Banners {
     public $js_file = 'roles.js';
+    public $plugin_url;
 
     public function __construct() {
         $path = dt_get_url_path();
+        $this->plugin_url = trailingslashit( plugin_dir_url( __FILE__ ) );
         //only load if on the details page
         if ( strpos( $path, 'contacts' ) === 0 && $path !== 'contacts' ){
             add_action( 'dt_contact_detail_notification', [ $this, 'dt_banners' ], 10, 1 );
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+            add_action( 'dt_record_top_full_with', [ $this, 'top_tile' ], 10, 2 );
         }
     }
 
     public function scripts() {
-        wp_enqueue_script( 'dt_roles_script', trailingslashit( plugin_dir_url( __FILE__ ) ) . $this->js_file, [], filemtime( plugin_dir_path( __FILE__ ) . $this->js_file ), true );
+        wp_enqueue_script( 'dt_roles_script', $this->plugin_url . $this->js_file, [], filemtime( plugin_dir_path( __FILE__ ) . $this->js_file ), true );
         wp_localize_script(
             'dt_roles_script', 'roles_settings', [
                 "template_dir_uri" => get_template_directory_uri(),
@@ -135,34 +138,152 @@ class DT_Roles_Banners {
             </style>
             <?php
         }
-
-        /**
-         * My actions tile
-         */
-        if ( dt_current_user_has_role( 'marketer' ) && isset( $roles_settings["my_actions"]["enabled"] ) && $roles_settings["my_actions"]["enabled"] !== false ) : ?>
-            <section class="small-12 grid-y grid-margin-y cell dr-tile">
-                <div class="bordered-box">
-                    <div style="display: flex">
-                        <div>
-                            <h4 class="section-header"><?php esc_html_e( 'My actions', 'roles_plugin' ); ?> <span id="dr-tile-loader" style="display: inline-block; margin-left: 10px; margin-right: 10px" class="loading-spinner"></span></h4>
-                        </div>
-                        <div class="action-buttons">
-                            <?php if ( dt_current_user_has_role( 'marketer' ) ) : ?>
-                            <button id="mark_dispatch_needed" class="button hollow"><?php esc_html_e( 'Ready for Dispatch', 'roles_plugin' ); ?></button>
-                            <button id="claim" class="button hollow"><?php esc_html_e( 'Claim for follow-up', 'roles_plugin' ); ?></button>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <style type="text/css">
-                .action-buttons .button{
-                    margin-bottom: 0;
-                }
-            </style>
-        <?php endif;
     }
+
+    public function top_tile( $post_type, $contact ){
+        if ( $post_type === "contacts" ) {
+            $roles_settings = get_option( "dt_roles_settings", [] );
+            if ( isset( $roles_settings["my_actions"]["enabled"] ) && $roles_settings["my_actions"]["enabled"] !== false ) {
+                $contact_fields = Disciple_Tools_Contacts::get_contact_fields(); ?>
+                <section class="small-12 cell">
+                    <div class="bordered-box" id="action-bar">
+                        <div class="record-name" title="<?php the_title_attribute(); ?>" style="display: flex">
+                            <div class="title"><?php the_title_attribute(); ?></div>
+                            <span id="action-bar-loader" style="display: inline-block; margin-left: 10px" class="loading-spinner"></span>
+                            <button class="expand-text-descriptions">
+                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                            </button>
+                            <button class="expand-text-descriptions" style="display: none">
+                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                            </button>
+                        </div>
+                        <!--                    <span class="separator"></span>-->
+                        <?php if ( $contact["assigned_to"]["id"] != get_current_user_id() && dt_current_user_has_role( "multiplier" ) ) : ?>
+                            <div class="action-button" id="claim">
+                                <img src="<?php echo esc_url( $this->plugin_url . "images/volunteer.svg" ); ?>"
+                                ><span class="action-text"><?php esc_html_e( 'Claim for follow-up', 'roles_plugin' ); ?></span>
+                            </div>
+                        <?php endif; ?>
+                        <?php if ( dt_current_user_has_role( 'marketer' ) ) : ?>
+                            <div class="action-button" id="mark_dispatch_needed">
+                                <img src="<?php echo esc_url( $this->plugin_url . "images/arrow-check-up-solid.svg" ); ?>"
+                                ><span class="action-text"><?php esc_html_e( 'Ready for Dispatch', 'roles_plugin' ); ?></span>
+                            </div>
+                        <?php endif; ?>
+                        <span class="separator"></span>
+                        <?php if ( dt_current_user_has_role( "multiplier" ) ):
+                            foreach ( $contact_fields as $field => $val ) {
+                                if ( strpos( $field, "quick_button" ) === 0 ) {
+                                    $current_value = 0;
+                                    if ( isset( $contact[ $field ] ) ) {
+                                        $current_value = $contact[ $field ];
+                                    }
+                                    $val["icon"] = $val["icon"] ?? 'meeting.svg'
+                                    ?>
+                                    <div data-id="<?php echo esc_html( $field ); ?>"
+                                         data-count="<?php echo esc_html( $current_value ); ?>"
+                                         class="action-button quick-action"
+                                         title="<?php echo esc_html( $val['name'] ); ?>"
+                                    >
+                                        <img style="height:28px" class="dt-svg-black" src="<?php echo esc_url( $val['icon'] ); ?>"
+                                        ><span class="action-text"><?php echo esc_html( $val["short_name"] ?? $val["name"] ); ?></span>
+                                    </div>
+                                <?php }
+                            }
+                        endif; ?>
+                    </div>
+                </section>
+
+                <style type="text/css">
+                    .dt-svg-blue {
+                        filter: invert(33%) sepia(95%) saturate(298%) hue-rotate(164deg) brightness(101%) contrast(87%);
+                    }
+                    .dt-svg-black {
+                        filter: brightness(0);
+                    }
+                    .dt-svg-grey {
+                        filter: invert(22%) sepia(0%) saturate(0%) hue-rotate(223deg) brightness(101%) contrast(84%);
+                    }
+                    #action-bar {
+                        padding: 3px 1rem;
+                        border-radius: 5px;
+                        display: flex;
+                        flex-wrap: wrap;
+
+                    }
+                    #action-bar .record-name {
+                        max-width: 20%;
+                        margin: 3px 0;
+                        color: #444;
+                    }
+                    #action-bar .record-name .title {
+                        font-weight: bold;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        line-height: 30px;
+
+                    }
+                    #action-bar .expand-text-descriptions {
+                        display: none;
+                        width: 20px;
+                        img {
+                        }
+                    }
+                    @media only screen and (max-width: 640px) {
+                        #action-bar .record-name {
+                            width: 100%;
+                            max-width: 100%;
+                            display: block;
+                        }
+                        #action-bar .record-name .title {
+                            flex-grow: 1;
+                        }
+                        #action-bar .action-text {
+                            display: none;
+                        }
+                        #action-bar .expand-text-descriptions {
+                            display: block;
+                        }
+                    }
+                    #action-bar img {
+                        height: 30px;
+                        width: 30px;
+                        display: inline-block;
+                        vertical-align: middle;
+                        filter: invert(22%) sepia(0%) saturate(0%) hue-rotate(223deg) brightness(101%) contrast(84%);
+                    }
+                    #action-bar .action-button {
+                        line-height: 30px;
+                        height: 30px;
+                        text-align: center;
+                        margin: 3px 6px;
+                        border-radius: 5px;
+                        color: #444;
+                        cursor: pointer;
+                    }
+                    #action-bar .action-button:hover {
+                        background-color: #eee;
+                    }
+                    #action-bar span {
+                        display: inline-block;
+                        vertical-align: middle;
+                        line-height: normal;
+                    }
+                    #action-bar .separator {
+                        border-right: 1px solid;
+                        color: #444;
+                        margin: 3px 2px
+                    }
+                    #mobile-quick-actions {
+                        display: none;
+                    }
+                </style>
+            <?php }
+        }
+
+    }
+
 }
 new DT_Roles_Banners();
 

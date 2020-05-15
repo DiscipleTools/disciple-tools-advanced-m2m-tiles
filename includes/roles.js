@@ -184,14 +184,14 @@
      * Ready for dispatch button
      */
     $('#mark_dispatch_needed').on("click", function () {
-      $('#dr-tile-loader').addClass('active')
+      $('#action-bar-loader').addClass('active')
       $(this).prop("disabled", true)
       API.update_post( "contacts", window.contactsDetailsWpApiSettings.contact.ID, {
         assigned_to: roles_settings.dispatcher_id,
         overall_status: 'unassigned',
         reason_assigned_to: 'dispatch'
       }).then(response=>{
-        $('#dr-tile-loader').removeClass('active')
+        $('#action-bar-loader').removeClass('active')
         setStatus(response)
         $(`.js-typeahead-assigned_to`).val(_.escape(response.assigned_to.display)).blur()
         $('#reason_assigned_to').html(`(${_.get(field_settings, `reason_assigned_to.default["dispatch"].label`, '')})`)
@@ -199,22 +199,48 @@
     })
 
     /**
-     * Ready for dispatch button
+     * Claim contact button
      */
     $('#claim').on("click", function () {
-      $('#dr-tile-loader').addClass('active')
+      $('#action-bar-loader').addClass('active')
       $(this).prop("disabled", true)
       API.update_post( "contacts", window.contactsDetailsWpApiSettings.contact.ID, {
         assigned_to: window.contactsDetailsWpApiSettings.current_user_id,
         overall_status: 'active',
         reason_assigned_to: 'follow-up'
       }).then(response=>{
-        $('#dr-tile-loader').removeClass('active')
+        $('#action-bar-loader').removeClass('active')
         setStatus(response)
         $(`.js-typeahead-assigned_to`).val(_.escape(response.assigned_to.display)).blur()
         $('#reason_assigned_to').html(`(${_.get(field_settings, `reason_assigned_to.default["follow-up"].label`, '')})`)
       })
     })
   }
+
+  $('.action-button.quick-action').on('click', function () {
+    let fieldKey = $(this).data('id')
+    let data = {}
+    let numberIndicator = $(this).data('count')
+    data[fieldKey] = parseInt(numberIndicator || "0" ) + 1
+    $('#action-bar-loader').addClass('active')
+    API.update_post('contacts', window.contactsDetailsWpApiSettings.contact.ID, data)
+    .then(data=>{
+      if (fieldKey.indexOf("quick_button")>-1){
+        if (_.get(data, "seeker_path.key")){
+          updateCriticalPath(data.seeker_path.key)
+        }
+      }
+      contactUpdated(false)
+      $('#action-bar-loader').removeClass('active')
+    }).catch(err=>{
+      console.log("error")
+      console.log(err)
+    })
+  })
+
+  $('#action-bar .expand-text-descriptions').on('click', function () {
+    $('#action-bar .expand-text-descriptions').toggle()
+    $('#action-bar .action-text').toggle()
+  })
 
 })(window.jQuery, window.roles_settings );
