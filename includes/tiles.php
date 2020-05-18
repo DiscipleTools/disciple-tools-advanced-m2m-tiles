@@ -158,17 +158,18 @@ class DT_Roles_Banners {
                             </button>
                         </div>
                         <!--                    <span class="separator"></span>-->
+                        <?php do_action( "dt_record_actions_bar_buttons_start", $post_type, $contact, $roles_settings ) ?>
                         <?php if ( $contact["assigned_to"]["id"] != get_current_user_id() && dt_current_user_has_role( "multiplier" ) ) : ?>
-                            <div class="action-button" id="claim">
+                            <button class="action-button" id="claim">
                                 <img src="<?php echo esc_url( $this->plugin_url . "images/volunteer.svg" ); ?>"
                                 ><span class="action-text"><?php esc_html_e( 'Claim for follow-up', 'roles_plugin' ); ?></span>
-                            </div>
+                            </button>
                         <?php endif; ?>
                         <?php if ( dt_current_user_has_role( 'marketer' ) ) : ?>
-                            <div class="action-button" id="mark_dispatch_needed">
+                            <button class="action-button" id="mark_dispatch_needed">
                                 <img src="<?php echo esc_url( $this->plugin_url . "images/arrow-check-up-solid.svg" ); ?>"
                                 ><span class="action-text"><?php esc_html_e( 'Ready for Dispatch', 'roles_plugin' ); ?></span>
-                            </div>
+                            </button>
                         <?php endif; ?>
                         <span class="separator"></span>
                         <?php if ( dt_current_user_has_role( "multiplier" ) ):
@@ -180,17 +181,18 @@ class DT_Roles_Banners {
                                     }
                                     $val["icon"] = $val["icon"] ?? 'meeting.svg'
                                     ?>
-                                    <div data-id="<?php echo esc_html( $field ); ?>"
+                                    <button data-id="<?php echo esc_html( $field ); ?>"
                                          data-count="<?php echo esc_html( $current_value ); ?>"
                                          class="action-button quick-action"
                                          title="<?php echo esc_html( $val['name'] ); ?>"
                                     >
-                                        <img style="height:28px" class="dt-svg-black" src="<?php echo esc_url( $val['icon'] ); ?>"
+                                        <img class="dt-svg-black" src="<?php echo esc_url( $val['icon'] ); ?>"
                                         ><span class="action-text"><?php echo esc_html( $val["short_name"] ?? $val["name"] ); ?></span>
-                                    </div>
+                                    </button>
                                 <?php }
                             }
                         endif; ?>
+                        <?php do_action( "dt_record_actions_bar_buttons_end", $post_type, $contact, $roles_settings ) ?>
                     </div>
                 </section>
 
@@ -247,8 +249,8 @@ class DT_Roles_Banners {
                         }
                     }
                     #action-bar img {
-                        height: 30px;
-                        width: 30px;
+                        height: 25px;
+                        width: 25px;
                         display: inline-block;
                         vertical-align: middle;
                         filter: invert(22%) sepia(0%) saturate(0%) hue-rotate(223deg) brightness(101%) contrast(84%);
@@ -258,9 +260,9 @@ class DT_Roles_Banners {
                         height: 30px;
                         text-align: center;
                         margin: 3px 6px;
+                        padding:0;
                         border-radius: 5px;
                         color: #444;
-                        cursor: pointer;
                     }
                     #action-bar .action-button:hover {
                         background-color: #eee;
