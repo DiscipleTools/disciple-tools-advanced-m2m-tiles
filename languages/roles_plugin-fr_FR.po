@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Disciple Tools - roles\n"
-"POT-Creation-Date: 2020-05-07 15:46+0100\n"
-"PO-Revision-Date: 2020-05-07 15:49+0100\n"
+"POT-Creation-Date: 2020-05-18 14:30+0100\n"
+"PO-Revision-Date: 2020-05-18 14:40+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -32,59 +32,78 @@ msgstr "Raison assigné a"
 msgid "Follow-Up"
 msgstr "Suivit"
 
-#: includes/dt-hooks.php:20
+#: includes/dt-hooks.php:22
 msgid "Digital Response"
 msgstr "Réponse Digital"
 
-#: includes/dt-hooks.php:24
+#: includes/dt-hooks.php:28
 msgid "Dispatch"
 msgstr "Répartition"
+
+#: includes/dt-hooks.php:36
+msgid "No Answer"
+msgstr "Pas de réponse"
+
+#: includes/dt-hooks.php:40
+msgid "Talked"
+msgstr "Discussion"
+
+#: includes/dt-hooks.php:44
+msgid "Scheduled"
+msgstr "Planifié"
+
+#: includes/dt-hooks.php:48
+msgid "Complete"
+msgstr "Réalisé"
+
+#: includes/dt-hooks.php:52
+msgid "No-Show"
+msgstr "Manqué"
 
 #: includes/rest-api.php:44
 msgid "No permission"
 msgstr "Pas de permission"
 
-#: includes/tiles.php:22
+#: includes/tiles.php:25
 msgid "All"
 msgstr "Tout"
 
-#: includes/tiles.php:23
+#: includes/tiles.php:26
 msgid "Ready"
 msgstr "Pret"
 
-#: includes/tiles.php:24
+#: includes/tiles.php:27
 msgid "Recent"
 msgstr "Récent"
 
-#: includes/tiles.php:25
+#: includes/tiles.php:28
 msgid "Location"
 msgstr "Emplacement"
 
-#: includes/tiles.php:26
+#: includes/tiles.php:29
 msgid "Assign"
 msgstr "Assigner"
 
-#: includes/tiles.php:40
+#: includes/tiles.php:44
 msgid "Assign For"
 msgstr "Assigner pour"
 
-#: includes/tiles.php:89
+#: includes/tiles.php:94
 msgid "Search"
 msgstr "Chercher"
 
-#: includes/tiles.php:97
+#: includes/tiles.php:102
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "Chercher un utilisateur"
 
-#: includes/tiles.php:147
-msgid "My actions"
-msgstr "Mes actions"
+#: includes/tiles.php:173
+msgid "Claim for follow-up"
+msgstr "M'assigner pour suivit"
 
-#: includes/tiles.php:150
+#: includes/tiles.php:179
 msgid "Ready for Dispatch"
 msgstr "Pret pour répartition"
 
-#: includes/tiles.php:151
-msgid "Claim for follow-up"
-msgstr "M'assigner pour suivit"
+#~ msgid "My actions"
+#~ msgstr "Mes actions"
