@@ -14,15 +14,21 @@ function custom_fields( array $fields, string $post_type = "" ){
             'default' => [
                 'follow-up' => [
                     'label' => __( "Follow-Up", 'roles_plugin' ),
-                    'roles' => [ "multiplier" ]
+                    'roles' => [ "multiplier" ],
+                    'icon' => trailingslashit( plugin_dir_url( __FILE__ ) ) . 'images/meeting.svg',
+                    'status' => 'assigned'
                 ],
                 'digital-response' => [
                     'label' => __( "Digital Response", 'roles_plugin' ),
-                    'roles' => [ "marketer" ]
+                    'roles' => [ "marketer" ],
+                    'icon' => get_template_directory_uri() . '/dt-assets/images/socialmedia.svg',
+                    'status' => 'assigned'
                 ],
                 'dispatch' => [
                     'label' => __( "Dispatch", 'roles_plugin' ),
-                    'roles' => [ "dispatcher" ]
+                    'roles' => [ "dispatcher" ],
+                    'icon' => trailingslashit( plugin_dir_url( __FILE__ ) ) . 'images/assign.svg',
+                    'status' => 'unassigned'
                 ],
             ],
         ];

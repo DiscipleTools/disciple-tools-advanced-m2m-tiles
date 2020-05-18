@@ -55,7 +55,8 @@ class DT_Roles_Banners {
                                     foreach ( $field_settings['reason_assigned_to']["default"] as $key => $value ) : ?>
                                         <li class="tabs-title">
                                             <a href="#<?php echo esc_html( $key ); ?>" data-field="<?php echo esc_html( $key ); ?>">
-                                                <?php echo esc_html( $value["label"] ); ?>
+                                                <img src="<?php echo esc_url( $value['icon'] ); ?>"
+                                                ><?php echo esc_html( $value["label"] ); ?>
                                             </a>
                                         </li>
                                     <?php endforeach;
@@ -118,6 +119,13 @@ class DT_Roles_Banners {
 
 
             <style type="text/css">
+                #filter-tabs img {
+                    height: 20px;
+                    width: 20px;
+                    display: inline-block;
+                    vertical-align: middle;
+                    margin-right: 2px;
+                }
                 .dispatcher-tile .populated-list .assigned-to-row > span {
                     white-space: nowrap;
                     text-overflow: ellipsis;
