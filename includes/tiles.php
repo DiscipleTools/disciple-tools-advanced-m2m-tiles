@@ -151,7 +151,10 @@ class DT_Roles_Banners {
     public function top_tile( $post_type, $contact ){
         if ( $post_type === "contacts" ) {
             $roles_settings = get_option( "dt_roles_settings", [] );
-            if ( isset( $roles_settings["my_actions"]["enabled"] ) && $roles_settings["my_actions"]["enabled"] !== false ) {
+            if ( isset( $roles_settings["my_actions"]["enabled"] ) && $roles_settings["my_actions"]["enabled"] !== false
+                && dt_current_user_has_role( "multiplier" )
+                && dt_current_user_has_role( "marketer" ) )
+            {
                 $contact_fields = Disciple_Tools_Contacts::get_contact_fields(); ?>
                 <section class="small-12 cell">
                     <div class="bordered-box" id="action-bar">
