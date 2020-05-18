@@ -97,16 +97,18 @@
   $(document).on('click', '.assign-user-button', function () {
     let user_id = $(this).data('id')
     $('#dispatch-tile-loader').addClass('active')
+    let selected_reason = _.get(field_settings, `reason_assigned_to.default[${selected_dispatch_tab}]`, {})
     API.update_post(
       'contacts',
       window.contactsDetailsWpApiSettings.contact.ID,
       {
         assigned_to: 'user-' + user_id,
-        reason_assigned_to: selected_dispatch_tab
+        reason_assigned_to: selected_dispatch_tab,
+        overall_status: selected_reason.status || 'assigned'
       }
     ).then(function (response) {
       $('#dispatch-tile-loader').removeClass('active')
-      $('#reason_assigned_to').html(`(${_.get(field_settings, `reason_assigned_to.default[${selected_dispatch_tab}].label`, '')})`)
+      $('#reason_assigned_to').html(`(${selected_reason.label || ''})`)
       setStatus(response)
       $(`.js-typeahead-assigned_to`).val(_.escape(response.assigned_to.display)).blur()
     })
