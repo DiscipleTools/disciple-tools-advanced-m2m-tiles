@@ -245,4 +245,35 @@
     $('#action-bar .action-text').toggle()
   })
 
+  $(document).on(  "click", `#assigned_to_t .typeahead__item`, function () {
+    $('#reason_assigned_to-modal').foundation('open');
+  })
+
+  /*
+   * Reason assigned to modal update
+   */
+  let confirmButton = $("#confirm-assign-reason")
+  confirmButton.on("click", function () {
+    let field = 'reason_assigned_to'
+    let select = $(`#reason_assigned_to-options`)
+    $(this).toggleClass('loading')
+    let val = select.val()
+    let data = {
+      [field]: val
+    }
+    API.update_post('contacts', window.contactsDetailsWpApiSettings.contact.ID, data).then(contactData=>{
+      $(this).toggleClass('loading')
+      $(`#${field}-modal`).foundation('close')
+      $('#reason_assigned_to').html(`(${_.get(field_settings, `reason_assigned_to.default[${val}].label`, '')})`)
+      setStatus(contactData)
+    }).catch(err => { console.error(err) })
+  })
+
+
+  // if ( window.contactsDetailsWpApiSettings.can_view_all){
+  //   let assigned_to_input = $(`.js-typeahead-assigned_to`).attr("disabled", true)
+  //   $('#assigned_to_t').attr("disabled", true)
+  //   $('.search_assigned_to').attr("disabled", true)
+  // }
+
 })(window.jQuery, window.roles_settings );

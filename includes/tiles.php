@@ -209,6 +209,35 @@ class DT_Roles_Banners {
                     </div>
                 </section>
 
+                <div class="reveal" id="reason_assigned_to-modal" data-reveal>
+                    <h3><?php echo esc_html( $contact_fields["reason_assigned_to"]["name"] ?? '' )?></h3>
+                    <p><?php echo esc_html( $contact_fields["reason_assigned_to"]["description"] ?? '' )?></p>
+                    <p><?php esc_html_e( 'Choose an option:', 'disciple_tools' )?></p>
+
+                    <select id="reason_assigned_to-options">
+                        <?php
+                        foreach ( $contact_fields["reason_assigned_to"]["default"] as $reason_key => $option ) {
+                            if ( $option["label"] ) {
+                                $selected = ( $reason_key === ( $contact["reason_assigned_to"]["key"] ?? "" ) ) ? "selected" : "";
+                                ?>
+                                <option
+                                    value="<?php echo esc_attr( $reason_key ) ?>" <?php echo esc_html( $selected ) ?>> <?php echo esc_html( $option["label"] ?? "" ) ?></option>
+                                <?php
+                            }
+                        }
+                        ?>
+                    </select>
+                    <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
+                        <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
+                    </button>
+                    <button class="button loader" type="button" id="confirm-assign-reason" data-field="reason_assigned_to">
+                        <?php echo esc_html__( 'Confirm', 'disciple_tools' )?>
+                    </button>
+                    <button class="close-button" data-close aria-label="Close modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
                 <style type="text/css">
                     .dt-svg-blue {
                         filter: invert(33%) sepia(95%) saturate(298%) hue-rotate(164deg) brightness(101%) contrast(87%);
