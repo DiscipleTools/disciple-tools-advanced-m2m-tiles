@@ -258,13 +258,16 @@
     let select = $(`#reason_assigned_to-options`)
     $(this).toggleClass('loading')
     let val = select.val()
+    let selected_reason = _.get(field_settings, `reason_assigned_to.default[${val}]`, {})
     let data = {
+      "overall_status": selected_reason.status || 'assigned',
       [field]: val
     }
+
     API.update_post('contacts', window.contactsDetailsWpApiSettings.contact.ID, data).then(contactData=>{
       $(this).toggleClass('loading')
       $(`#${field}-modal`).foundation('close')
-      $('#reason_assigned_to').html(`(${_.get(field_settings, `reason_assigned_to.default[${val}].label`, '')})`)
+      $('#reason_assigned_to').html(selected_reason.label)
       setStatus(contactData)
     }).catch(err => { console.error(err) })
   })

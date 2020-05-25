@@ -38,8 +38,40 @@ class DT_Roles_Banners {
 
     public function dt_banners( $contact ){
         $roles_settings = get_option( "dt_roles_settings", [] );
+        $field_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" )["fields"];
+
+        if ( isset( $roles_settings["assigned_to"]["enabled"] ) && $roles_settings["assigned_to"]["enabled"] !== false ) :?>
+            <div class="reveal" id="reason_assigned_to-modal" data-reveal>
+                <h3><?php echo esc_html( $field_settings["reason_assigned_to"]["name"] ?? '' )?></h3>
+                <p><?php echo esc_html( $field_settings["reason_assigned_to"]["description"] ?? '' )?></p>
+                <p><?php esc_html_e( 'Choose an option:', 'disciple_tools' )?></p>
+
+                <select id="reason_assigned_to-options">
+                    <?php
+                    foreach ( $field_settings["reason_assigned_to"]["default"] as $reason_key => $option ) {
+                        if ( $option["label"] ) {
+                            $selected = ( $reason_key === ( $contact["reason_assigned_to"]["key"] ?? "" ) ) ? "selected" : "";
+                            ?>
+                            <option
+                                value="<?php echo esc_attr( $reason_key ) ?>" <?php echo esc_html( $selected ) ?>> <?php echo esc_html( $option["label"] ?? "" ) ?></option>
+                            <?php
+                        }
+                    }
+                    ?>
+                </select>
+                <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
+                    <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
+                </button>
+                <button class="button loader" type="button" id="confirm-assign-reason" data-field="reason_assigned_to">
+                    <?php echo esc_html__( 'Confirm', 'disciple_tools' )?>
+                </button>
+                <button class="close-button" data-close aria-label="Close modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <?php endif;
+
         if ( dt_current_user_has_role( 'dispatcher' ) && isset( $roles_settings["assigned_to"]["enabled"] ) && $roles_settings["assigned_to"]["enabled"] !== false ) {
-            $field_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" )["fields"];
             ?>
             <section class="small-12 grid-y grid-margin-y cell dispatcher-tile">
                 <div class="bordered-box">
@@ -209,34 +241,6 @@ class DT_Roles_Banners {
                     </div>
                 </section>
 
-                <div class="reveal" id="reason_assigned_to-modal" data-reveal>
-                    <h3><?php echo esc_html( $contact_fields["reason_assigned_to"]["name"] ?? '' )?></h3>
-                    <p><?php echo esc_html( $contact_fields["reason_assigned_to"]["description"] ?? '' )?></p>
-                    <p><?php esc_html_e( 'Choose an option:', 'disciple_tools' )?></p>
-
-                    <select id="reason_assigned_to-options">
-                        <?php
-                        foreach ( $contact_fields["reason_assigned_to"]["default"] as $reason_key => $option ) {
-                            if ( $option["label"] ) {
-                                $selected = ( $reason_key === ( $contact["reason_assigned_to"]["key"] ?? "" ) ) ? "selected" : "";
-                                ?>
-                                <option
-                                    value="<?php echo esc_attr( $reason_key ) ?>" <?php echo esc_html( $selected ) ?>> <?php echo esc_html( $option["label"] ?? "" ) ?></option>
-                                <?php
-                            }
-                        }
-                        ?>
-                    </select>
-                    <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-                        <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
-                    </button>
-                    <button class="button loader" type="button" id="confirm-assign-reason" data-field="reason_assigned_to">
-                        <?php echo esc_html__( 'Confirm', 'disciple_tools' )?>
-                    </button>
-                    <button class="close-button" data-close aria-label="Close modal" type="button">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
 
                 <style type="text/css">
                     .dt-svg-blue {
