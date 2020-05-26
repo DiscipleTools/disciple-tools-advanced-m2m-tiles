@@ -180,44 +180,42 @@
         }
       },
     });
-
-
-    /**
-     * Ready for dispatch button
-     */
-    $('#mark_dispatch_needed').on("click", function () {
-      $('#action-bar-loader').addClass('active')
-      $(this).prop("disabled", true)
-      API.update_post( "contacts", window.contactsDetailsWpApiSettings.contact.ID, {
-        assigned_to: roles_settings.dispatcher_id,
-        overall_status: 'unassigned',
-        reason_assigned_to: 'dispatch'
-      }).then(response=>{
-        $('#action-bar-loader').removeClass('active')
-        setStatus(response)
-        $(`.js-typeahead-assigned_to`).val(_.escape(response.assigned_to.display)).blur()
-        $('#reason_assigned_to').html(`(${_.get(field_settings, `reason_assigned_to.default["dispatch"].label`, '')})`)
-      })
-    })
-
-    /**
-     * Claim contact button
-     */
-    $('#claim').on("click", function () {
-      $('#action-bar-loader').addClass('active')
-      $(this).prop("disabled", true)
-      API.update_post( "contacts", window.contactsDetailsWpApiSettings.contact.ID, {
-        assigned_to: window.contactsDetailsWpApiSettings.current_user_id,
-        overall_status: 'active',
-        reason_assigned_to: 'follow-up'
-      }).then(response=>{
-        $('#action-bar-loader').removeClass('active')
-        setStatus(response)
-        $(`.js-typeahead-assigned_to`).val(_.escape(response.assigned_to.display)).blur()
-        $('#reason_assigned_to').html(`(${_.get(field_settings, `reason_assigned_to.default["follow-up"].label`, '')})`)
-      })
-    })
   }
+  /**
+   * Ready for dispatch button
+   */
+  $('#mark_dispatch_needed').on("click", function () {
+    $('#action-bar-loader').addClass('active')
+    $(this).prop("disabled", true)
+    API.update_post( "contacts", window.contactsDetailsWpApiSettings.contact.ID, {
+      assigned_to: roles_settings.dispatcher_id,
+      overall_status: 'unassigned',
+      reason_assigned_to: 'dispatch'
+    }).then(response=>{
+      $('#action-bar-loader').removeClass('active')
+      setStatus(response)
+      $(`.js-typeahead-assigned_to`).val(_.escape(response.assigned_to.display)).blur()
+      $('#reason_assigned_to').html(`(${_.get(field_settings, `reason_assigned_to.default["dispatch"].label`, '')})`)
+    })
+  })
+
+  /**
+   * Claim contact button
+   */
+  $('#claim').on("click", function () {
+    $('#action-bar-loader').addClass('active')
+    $(this).prop("disabled", true)
+    API.update_post( "contacts", window.contactsDetailsWpApiSettings.contact.ID, {
+      assigned_to: window.contactsDetailsWpApiSettings.current_user_id,
+      overall_status: 'active',
+      reason_assigned_to: 'follow-up'
+    }).then(response=>{
+      $('#action-bar-loader').removeClass('active')
+      setStatus(response)
+      $(`.js-typeahead-assigned_to`).val(_.escape(response.assigned_to.display)).blur()
+      $('#reason_assigned_to').html(`(${_.get(field_settings, `reason_assigned_to.default["follow-up"].label`, '')})`)
+    })
+  })
 
   $('.action-button.quick-action').on('click', function () {
     let fieldKey = $(this).data('id')
