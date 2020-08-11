@@ -78,10 +78,10 @@
           <span>
             <img style="height: 12px;" src="${_.escape(window.wpApiShare.template_dir)}/dt-assets/images/broken.svg"/>
             <span style="font-size: 14px">${ _.escape(m.update_needed) }</span>
-          </span>` : '' 
+          </span>` : ''
         }
-        ${ m.best_location_match ? `<span>(${ _.escape(m.best_location_match) })</span>` : '' 
-      
+        ${ m.best_location_match ? `<span>(${ _.escape(m.best_location_match) })</span>` : ''
+
         }
         <div style="flex-grow: 1"></div>
         <button class="button hollow tiny assign-user-button" data-id="${ _.escape(m.ID) }" style="margin-bottom: 3px">
@@ -250,12 +250,10 @@
   /*
    * Reason assigned to modal update
    */
-  let confirmButton = $("#confirm-assign-reason")
-  confirmButton.on("click", function () {
+  $('#reason_assigned_to-options button').on("click", function (){
     let field = 'reason_assigned_to'
-    let select = $(`#reason_assigned_to-options`)
-    $(this).toggleClass('loading')
-    let val = select.val()
+    $('#reason_assigned_to-modal .loading-spinner').addClass('active')
+    let val = $(this).attr('id')
     let selected_reason = _.get(field_settings, `reason_assigned_to.default[${val}]`, {})
     let data = {
       "overall_status": selected_reason.status || 'assigned',
@@ -263,11 +261,14 @@
     }
 
     API.update_post('contacts', window.contactsDetailsWpApiSettings.contact.ID, data).then(contactData=>{
-      $(this).toggleClass('loading')
-      $(`#${field}-modal`).foundation('close')
       $('#reason_assigned_to').html(selected_reason.label)
       setStatus(contactData)
-    }).catch(err => { console.error(err) })
+    }).catch(err => {
+      console.error(err)
+    }).then(()=>{
+      $(`#${field}-modal`).foundation('close')
+      $('#reason_assigned_to-modal .loading-spinner').removeClass('active')
+    })
   })
 
 
