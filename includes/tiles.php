@@ -187,7 +187,7 @@ class DT_Roles_Banners {
             if ( isset( $roles_settings["my_actions"]["enabled"] ) && $roles_settings["my_actions"]["enabled"] !== false
                 && ( dt_current_user_has_role( "multiplier" ) || dt_current_user_has_role( "marketer" ) ) )
             {
-                $contact_fields = Disciple_Tools_Contacts::get_contact_fields(); ?>
+                $contact_fields = DT_Posts::get_post_field_settings( "contacts" ); ?>
                 <section class="small-12 cell">
                     <div class="bordered-box" id="action-bar">
                         <div class="record-name" title="<?php the_title_attribute(); ?>" style="display: flex">
