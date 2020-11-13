@@ -271,11 +271,4 @@
     })
   })
 
-
-  // if ( window.contactsDetailsWpApiSettings.can_view_all){
-  //   let assigned_to_input = $(`.js-typeahead-assigned_to`).attr("disabled", true)
-  //   $('#assigned_to_t').attr("disabled", true)
-  //   $('.search_assigned_to').attr("disabled", true)
-  // }
-
 })(window.jQuery, window.roles_settings );
