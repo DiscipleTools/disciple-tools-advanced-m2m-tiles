@@ -2,7 +2,7 @@
 
 
 class DT_Roles_Plugin_Endpoints {
-    public $permissions = [ 'view_any_contacts' ];
+    public $permissions = [ 'dt_all_access_contacts' ];
 
     private static $_instance = null;
     public static function instance() {
