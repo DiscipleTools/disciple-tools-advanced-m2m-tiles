@@ -10,7 +10,7 @@ class DT_Roles_Banners {
         $this->plugin_url = trailingslashit( plugin_dir_url( __FILE__ ) );
         //only load if on the details page
         if ( strpos( $path, 'contacts' ) === 0 && $path !== 'contacts' ){
-            add_action( 'dt_contact_detail_notification', [ $this, 'dt_banners' ], 10, 1 );
+            add_action( 'dt_record_top_above_details', [ $this, 'dt_banners' ], 10, 1 );
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
             add_action( 'dt_record_top_full_with', [ $this, 'top_tile' ], 10, 2 );
         }
@@ -36,7 +36,7 @@ class DT_Roles_Banners {
         );
     }
 
-    public function dt_banners( $contact ){
+    public function dt_banners( $post_type ){
         $roles_settings = get_option( "dt_roles_settings", [] );
         $field_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" )["fields"];
 
