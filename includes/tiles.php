@@ -20,7 +20,7 @@ class DT_Roles_Banners {
         if ( !is_singular( 'contacts' ) ){
             return;
         }
-        wp_enqueue_script( 'dt_roles_script', $this->plugin_url . $this->js_file, [], filemtime( plugin_dir_path( __FILE__ ) . $this->js_file ), true );
+        wp_enqueue_script( 'dt_roles_script', $this->plugin_url . $this->js_file, [ 'details', 'dt_contacts_access' ], filemtime( plugin_dir_path( __FILE__ ) . $this->js_file ), true );
         wp_localize_script(
             'dt_roles_script', 'roles_settings', [
                 "template_dir_uri" => get_template_directory_uri(),
