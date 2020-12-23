@@ -25,11 +25,11 @@ class DT_Roles_Banners {
             'dt_roles_script', 'roles_settings', [
                 "template_dir_uri" => get_template_directory_uri(),
                 "translations" => [
-                    "all" => __( "All", 'roles_plugin' ),
-                    "ready" => __( "Ready", 'roles_plugin' ),
-                    "recent" => __( "Recent", 'roles_plugin' ),
-                    "location" => __( "Location", 'roles_plugin' ),
-                    "assign" => __( "Assign", 'roles_plugin' ),
+                    "all" => __( "All", 'dt_roles_tiles' ),
+                    "ready" => __( "Ready", 'dt_roles_tiles' ),
+                    "recent" => __( "Recent", 'dt_roles_tiles' ),
+                    "location" => __( "Location", 'dt_roles_tiles' ),
+                    "assign" => __( "Assign", 'dt_roles_tiles' ),
                 ],
                 "dispatcher_id" => dt_get_base_user( true )
             ]
@@ -74,7 +74,7 @@ class DT_Roles_Banners {
             <section class="small-12 grid-y grid-margin-y cell dispatcher-tile">
                 <div class="bordered-box">
                     <div class="cell dt-filter-tabs">
-                        <h4 class="section-header"><?php esc_html_e( 'Assign For', 'roles_plugin' ); ?> <span id="dispatch-tile-loader" style="display: inline-block; margin-left: 10px" class="loading-spinner"></span>
+                        <h4 class="section-header"><?php esc_html_e( 'Assign For', 'dt_roles_tiles' ); ?> <span id="dispatch-tile-loader" style="display: inline-block; margin-left: 10px" class="loading-spinner"></span>
                             <button class="section-chevron chevron_down">
                                 <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
                             </button>
@@ -124,7 +124,7 @@ class DT_Roles_Banners {
                                     </div>
                                 </div>
                                 <div class="" id="other-assign-to-typeahead" style="display:none;">
-                                    <strong><?php esc_html_e( 'Search', 'roles_plugin' ); ?></strong><br>
+                                    <strong><?php esc_html_e( 'Search', 'dt_roles_tiles' ); ?></strong><br>
                                     <div class="">
                                         <var id="assign-result-container" class="result-container assign-result-container"></var>
                                         <div id="assign_t" name="form-assign">
@@ -132,7 +132,7 @@ class DT_Roles_Banners {
                                                 <div class="typeahead__field">
                                                     <span class="typeahead__query">
                                                         <input class="js-typeahead-assign input-height" dir="auto"
-                                                               name="assign[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'roles_plugin' ) ?>"
+                                                               name="assign[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'dt_roles_tiles' ) ?>"
                                                                autocomplete="off">
                                                     </span>
                                                     <span class="typeahead__button">
@@ -205,13 +205,13 @@ class DT_Roles_Banners {
                         <?php if ( $contact["assigned_to"]["id"] != get_current_user_id() && dt_current_user_has_role( "multiplier" ) ) : ?>
                             <button class="action-button" id="claim">
                                 <img src="<?php echo esc_url( $this->plugin_url . "images/volunteer.svg" ); ?>"
-                                ><span class="action-text"><?php esc_html_e( 'Claim for follow-up', 'roles_plugin' ); ?></span>
+                                ><span class="action-text"><?php esc_html_e( 'Claim for follow-up', 'dt_roles_tiles' ); ?></span>
                             </button>
                         <?php endif; ?>
                         <?php if ( dt_current_user_has_role( 'marketer' ) ) : ?>
                             <button class="action-button" id="mark_dispatch_needed">
                                 <img src="<?php echo esc_url( $this->plugin_url . "images/arrow-check-up-solid.svg" ); ?>"
-                                ><span class="action-text"><?php esc_html_e( 'Ready for Dispatch', 'roles_plugin' ); ?></span>
+                                ><span class="action-text"><?php esc_html_e( 'Ready for Dispatch', 'dt_roles_tiles' ); ?></span>
                             </button>
                         <?php endif; ?>
                         <span class="separator"></span>

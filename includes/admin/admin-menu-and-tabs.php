@@ -20,7 +20,7 @@ DT_Roles_Plugin_Menu::instance();
  */
 class DT_Roles_Plugin_Menu {
 
-    public $token = 'roles_plugin';
+    public $token = 'dt_roles_tiles';
     public $fields = [ "assigned_to", "my_actions" ];
 
     private static $_instance = null;
@@ -59,8 +59,8 @@ class DT_Roles_Plugin_Menu {
      * @since 0.1
      */
     public function register_menu() {
-        add_menu_page( __( 'Extensions (DT)', 'roles_plugin' ), __( 'Extensions (DT)', 'roles_plugin' ), 'manage_dt', 'dt_extensions', [ $this, 'extensions_menu' ], 'dashicons-admin-generic', 59 );
-        add_submenu_page( 'dt_extensions', __( 'Roles Plugin', 'roles_plugin' ), __( 'Roles Plugin', 'roles_plugin' ), 'manage_dt', $this->token, [ $this, 'content' ] );
+        add_menu_page( __( 'Extensions (DT)', 'dt_roles_tiles' ), __( 'Extensions (DT)', 'dt_roles_tiles' ), 'manage_dt', 'dt_extensions', [ $this, 'extensions_menu' ], 'dashicons-admin-generic', 59 );
+        add_submenu_page( 'dt_extensions', __( 'Roles Plugin', 'dt_roles_tiles' ), __( 'Roles Plugin', 'dt_roles_tiles' ), 'manage_dt', $this->token, [ $this, 'content' ] );
     }
 
     /**
@@ -80,7 +80,7 @@ class DT_Roles_Plugin_Menu {
         }
 
 
-            $this->save_settings();
+        $this->save_settings();
 
         $this->display_content();
 
@@ -121,7 +121,7 @@ class DT_Roles_Plugin_Menu {
                     <div id="postbox-container-1" class="postbox-container">
                         <!-- Right Column -->
 
-                        <?php $this->right_column() ?>
+                        <?php // $this->right_column() ?>
 
                         <!-- End Right Column -->
                     </div><!-- postbox-container 1 -->
