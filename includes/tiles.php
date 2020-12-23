@@ -10,7 +10,7 @@ class DT_Roles_Banners {
         $this->plugin_url = trailingslashit( plugin_dir_url( __FILE__ ) );
         //only load if on the details page
         if ( strpos( $path, 'contacts' ) === 0 && $path !== 'contacts' ){
-            add_action( 'dt_contact_detail_notification', [ $this, 'dt_banners' ], 10, 1 );
+            add_action( 'dt_record_top_above_details', [ $this, 'dt_banners' ], 10, 1 );
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
             add_action( 'dt_record_top_full_with', [ $this, 'top_tile' ], 10, 2 );
         }
@@ -20,23 +20,23 @@ class DT_Roles_Banners {
         if ( !is_singular( 'contacts' ) ){
             return;
         }
-        wp_enqueue_script( 'dt_roles_script', $this->plugin_url . $this->js_file, [], filemtime( plugin_dir_path( __FILE__ ) . $this->js_file ), true );
+        wp_enqueue_script( 'dt_roles_script', $this->plugin_url . $this->js_file, [ 'details', 'dt_contacts_access' ], filemtime( plugin_dir_path( __FILE__ ) . $this->js_file ), true );
         wp_localize_script(
             'dt_roles_script', 'roles_settings', [
                 "template_dir_uri" => get_template_directory_uri(),
                 "translations" => [
-                    "all" => __( "All", 'roles_plugin' ),
-                    "ready" => __( "Ready", 'roles_plugin' ),
-                    "recent" => __( "Recent", 'roles_plugin' ),
-                    "location" => __( "Location", 'roles_plugin' ),
-                    "assign" => __( "Assign", 'roles_plugin' ),
+                    "all" => __( "All", 'dt_roles_tiles' ),
+                    "ready" => __( "Ready", 'dt_roles_tiles' ),
+                    "recent" => __( "Recent", 'dt_roles_tiles' ),
+                    "location" => __( "Location", 'dt_roles_tiles' ),
+                    "assign" => __( "Assign", 'dt_roles_tiles' ),
                 ],
                 "dispatcher_id" => dt_get_base_user( true )
             ]
         );
     }
 
-    public function dt_banners( $contact ){
+    public function dt_banners( $post_type ){
         $roles_settings = get_option( "dt_roles_settings", [] );
         $field_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" )["fields"];
 
@@ -74,7 +74,7 @@ class DT_Roles_Banners {
             <section class="small-12 grid-y grid-margin-y cell dispatcher-tile">
                 <div class="bordered-box">
                     <div class="cell dt-filter-tabs">
-                        <h4 class="section-header"><?php esc_html_e( 'Assign For', 'roles_plugin' ); ?> <span id="dispatch-tile-loader" style="display: inline-block; margin-left: 10px" class="loading-spinner"></span>
+                        <h4 class="section-header"><?php esc_html_e( 'Assign For', 'dt_roles_tiles' ); ?> <span id="dispatch-tile-loader" style="display: inline-block; margin-left: 10px" class="loading-spinner"></span>
                             <button class="section-chevron chevron_down">
                                 <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
                             </button>
@@ -124,7 +124,7 @@ class DT_Roles_Banners {
                                     </div>
                                 </div>
                                 <div class="" id="other-assign-to-typeahead" style="display:none;">
-                                    <strong><?php esc_html_e( 'Search', 'roles_plugin' ); ?></strong><br>
+                                    <strong><?php esc_html_e( 'Search', 'dt_roles_tiles' ); ?></strong><br>
                                     <div class="">
                                         <var id="assign-result-container" class="result-container assign-result-container"></var>
                                         <div id="assign_t" name="form-assign">
@@ -132,7 +132,7 @@ class DT_Roles_Banners {
                                                 <div class="typeahead__field">
                                                     <span class="typeahead__query">
                                                         <input class="js-typeahead-assign input-height" dir="auto"
-                                                               name="assign[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'roles_plugin' ) ?>"
+                                                               name="assign[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'dt_roles_tiles' ) ?>"
                                                                autocomplete="off">
                                                     </span>
                                                     <span class="typeahead__button">
@@ -187,7 +187,7 @@ class DT_Roles_Banners {
             if ( isset( $roles_settings["my_actions"]["enabled"] ) && $roles_settings["my_actions"]["enabled"] !== false
                 && ( dt_current_user_has_role( "multiplier" ) || dt_current_user_has_role( "marketer" ) ) )
             {
-                $contact_fields = Disciple_Tools_Contacts::get_contact_fields(); ?>
+                $contact_fields = DT_Posts::get_post_field_settings( "contacts" ); ?>
                 <section class="small-12 cell">
                     <div class="bordered-box" id="action-bar">
                         <div class="record-name" title="<?php the_title_attribute(); ?>" style="display: flex">
@@ -205,13 +205,13 @@ class DT_Roles_Banners {
                         <?php if ( $contact["assigned_to"]["id"] != get_current_user_id() && dt_current_user_has_role( "multiplier" ) ) : ?>
                             <button class="action-button" id="claim">
                                 <img src="<?php echo esc_url( $this->plugin_url . "images/volunteer.svg" ); ?>"
-                                ><span class="action-text"><?php esc_html_e( 'Claim for follow-up', 'roles_plugin' ); ?></span>
+                                ><span class="action-text"><?php esc_html_e( 'Claim for follow-up', 'dt_roles_tiles' ); ?></span>
                             </button>
                         <?php endif; ?>
                         <?php if ( dt_current_user_has_role( 'marketer' ) ) : ?>
                             <button class="action-button" id="mark_dispatch_needed">
                                 <img src="<?php echo esc_url( $this->plugin_url . "images/arrow-check-up-solid.svg" ); ?>"
-                                ><span class="action-text"><?php esc_html_e( 'Ready for Dispatch', 'roles_plugin' ); ?></span>
+                                ><span class="action-text"><?php esc_html_e( 'Ready for Dispatch', 'dt_roles_tiles' ); ?></span>
                             </button>
                         <?php endif; ?>
                         <span class="separator"></span>

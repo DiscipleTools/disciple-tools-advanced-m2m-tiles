@@ -1,10 +1,10 @@
 "use strict";
 (function($, roles_settings) {
 
-  let field_settings = window.contactsDetailsWpApiSettings.contacts_custom_fields_settings
+  let field_settings = window.detailsSettings.post_settings.fields
   let data = null
-  if (_.get(window.contactsDetailsWpApiSettings, "contact.location_grid")){
-    data = {location_ids: window.contactsDetailsWpApiSettings.contact.location_grid.map(l=>l.id)}
+  if (_.get(window.detailsSettings, "post_fields.location_grid")){
+    data = {location_ids: window.detailsSettings.post_fields.location_grid.map(l=>l.id)}
   }
   let dispatch_users_promise = null
 
@@ -100,7 +100,7 @@
     let selected_reason = _.get(field_settings, `reason_assigned_to.default[${selected_dispatch_tab}]`, {})
     API.update_post(
       'contacts',
-      window.contactsDetailsWpApiSettings.contact.ID,
+      window.detailsSettings.post_fields.ID,
       {
         assigned_to: 'user-' + user_id,
         reason_assigned_to: selected_dispatch_tab,
@@ -159,7 +159,7 @@
       emptyTemplate: _.escape(window.wpApiShare.translations.no_records_found),
       callback: {
         onClick: function(node, a, item){
-          API.update_post('contacts', window.contactsDetailsWpApiSettings.contact.ID, {assigned_to: 'user-' + item.ID}).then(function (response) {
+          API.update_post('contacts', window.detailsSettings.post_fields.ID, {assigned_to: 'user-' + item.ID}).then(function (response) {
             setStatus(response)
             $(`.js-typeahead-assigned_to`).val(_.escape(response.assigned_to.display)).blur()
           }).catch(err => { console.error(err) })
@@ -187,7 +187,7 @@
   $('#mark_dispatch_needed').on("click", function () {
     $('#action-bar-loader').addClass('active')
     $(this).prop("disabled", true)
-    API.update_post( "contacts", window.contactsDetailsWpApiSettings.contact.ID, {
+    API.update_post( "contacts", window.detailsSettings.post_fields.ID, {
       assigned_to: roles_settings.dispatcher_id,
       overall_status: 'unassigned',
       reason_assigned_to: 'dispatch'
@@ -205,8 +205,8 @@
   $('#claim').on("click", function () {
     $('#action-bar-loader').addClass('active')
     $(this).prop("disabled", true)
-    API.update_post( "contacts", window.contactsDetailsWpApiSettings.contact.ID, {
-      assigned_to: window.contactsDetailsWpApiSettings.current_user_id,
+    API.update_post( "contacts", window.detailsSettings.post_fields.ID, {
+      assigned_to: window.detailsSettings.current_user_id,
       overall_status: 'active',
       reason_assigned_to: 'follow-up'
     }).then(response=>{
@@ -223,14 +223,14 @@
     let numberIndicator = $(this).data('count')
     data[fieldKey] = parseInt(numberIndicator || "0" ) + 1
     $('#action-bar-loader').addClass('active')
-    API.update_post('contacts', window.contactsDetailsWpApiSettings.contact.ID, data)
+    API.update_post('contacts', window.detailsSettings.post_fields.ID, data)
     .then(data=>{
       if (fieldKey.indexOf("quick_button")>-1){
         if (_.get(data, "seeker_path.key")){
           updateCriticalPath(data.seeker_path.key)
         }
       }
-      contactUpdated(false)
+      record_updated(false)
       $('#action-bar-loader').removeClass('active')
     }).catch(err=>{
       console.log("error")
@@ -260,7 +260,7 @@
       [field]: val
     }
 
-    API.update_post('contacts', window.contactsDetailsWpApiSettings.contact.ID, data).then(contactData=>{
+    API.update_post('contacts', window.detailsSettings.post_fields.ID, data).then(contactData=>{
       $('#reason_assigned_to').html(selected_reason.label)
       setStatus(contactData)
     }).catch(err => {
@@ -270,12 +270,5 @@
       $('#reason_assigned_to-modal .loading-spinner').removeClass('active')
     })
   })
-
-
-  // if ( window.contactsDetailsWpApiSettings.can_view_all){
-  //   let assigned_to_input = $(`.js-typeahead-assigned_to`).attr("disabled", true)
-  //   $('#assigned_to_t').attr("disabled", true)
-  //   $('.search_assigned_to').attr("disabled", true)
-  // }
 
 })(window.jQuery, window.roles_settings );

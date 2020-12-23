@@ -2,7 +2,7 @@
 
 
 class DT_Roles_Plugin_Endpoints {
-    public $permissions = [ 'view_any_contacts' ];
+    public $permissions = [ 'dt_all_access_contacts' ];
 
     private static $_instance = null;
     public static function instance() {
@@ -70,12 +70,18 @@ class DT_Roles_Plugin_Endpoints {
                 $location = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->dt_location_grid WHERE grid_id = %s", esc_sql( $grid_id ) ), ARRAY_A );
                 $levels = [];
 
-                $match_location_ids = "( ";
-                for ( $i = 0; $i <= ( (int) $location["level"] ); $i++ ) {
-                    $levels[ $location["admin". $i . "_grid_id"]] = [ "level" => $i ];
-                    $match_location_ids .= $location["admin". $i . "_grid_id"] . ', ';
+                if ( $grid_id === "1" ){
+                    $match_location_ids = "( 1 )";
+                } else {
+                    $match_location_ids = "( ";
+                    for ( $i = 0; $i <= ( (int) $location["level"] ); $i++ ) {
+                        $levels[ $location["admin". $i . "_grid_id"]] = [ "level" => $i ];
+                        $match_location_ids .= $location["admin". $i . "_grid_id"] . ', ';
+                    }
+                    $match_location_ids .= ')';
+
                 }
-                $match_location_ids .= ')';
+
                 $match_location_ids = str_replace( ', )', ' )', $match_location_ids );
                 //phpcs:disable
                 //already sanitized IN value

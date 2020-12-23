@@ -1,17 +1,17 @@
 <?php
 /**
- * Plugin Name: Disciple Tools - Roles Plugin
+ * Plugin Name: Disciple Tools - Role Tiles
  * Plugin URI: https://github.com/DiscipleTools/disciple-tools-roles
- * Description: Disciple Tools - Roles Plugin
+ * Description: Disciple Tools - Roles Tiles plugin adds specific supporting tile for different roles.
  *
- * Version:  0.1.0
+ * Version:  0.2
  * Author URI: https://github.com/DiscipleTools
  * GitHub Plugin URI: https://github.com/DiscipleTools/disciple-tools-roles
  * Requires at least: 4.7.0
  * (Requires 4.7+ because of the integration of the REST API at 4.7 and the security requirements of this milestone version.)
  * Tested up to: 5.4
  *
- * @package roles_plugin
+ * @package dt_roles_tiles
  * @link    https://github.com/DiscipleTools
  * @license GPL-2.0 or later
  *          https://www.gnu.org/licenses/gpl-2.0.html
@@ -24,13 +24,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 $dt_roles_required_dt_theme_version = '0.29.0';
 
 /**
- * Gets the instance of the `roles_plugin` class.
+ * Gets the instance of the `dt_roles_tiles` class.
  *
  * @since  0.1
  * @access public
  * @return object|bool
  */
-function roles_plugin() {
+add_action( 'after_setup_theme', function() {
     global $dt_roles_required_dt_theme_version;
     $wp_theme = wp_get_theme();
     $version = $wp_theme->version;
@@ -39,7 +39,7 @@ function roles_plugin() {
      */
     $is_theme_dt = strpos( $wp_theme->get_template(), "disciple-tools-theme" ) !== false || $wp_theme->name === "Disciple Tools";
     if ( $is_theme_dt && version_compare( $version, $dt_roles_required_dt_theme_version, "<" ) ) {
-        add_action( 'admin_notices', 'roles_plugin_hook_admin_notice' );
+        add_action( 'admin_notices', 'dt_roles_tiles_hook_admin_notice' );
         add_action( 'wp_ajax_dismissed_notice_handler', 'dt_hook_ajax_notice_handler' );
         return false;
     }
@@ -60,8 +60,8 @@ function roles_plugin() {
     if ( !$is_rest || strpos( dt_get_url_path(), 'dt-roles' ) !== false ){
         return DT_Roles_Plugin::get_instance();
     }
-}
-add_action( 'after_setup_theme', 'roles_plugin' );
+    return false;
+}, 50 );
 
 /**
  * Singleton class for setting up the plugin.
@@ -123,7 +123,10 @@ class DT_Roles_Plugin {
      * @return void
      */
     private function includes() {
-        require_once( 'includes/admin/admin-menu-and-tabs.php' );
+        if ( is_admin() ) {
+            require_once( 'includes/admin/admin-menu-and-tabs.php' );
+        }
+
         require_once "includes/tiles.php";
     }
 
@@ -147,8 +150,8 @@ class DT_Roles_Plugin {
         $this->img_uri      = trailingslashit( $this->dir_uri . 'img' );
 
         // Admin and settings variables
-        $this->token             = 'roles_plugin';
-        $this->version             = '0.1';
+        $this->token             = 'dt_roles_tiles';
+        $this->version             = '0.2';
 
         // sample rest api class
         require_once( 'includes/rest-api.php' );
@@ -227,7 +230,7 @@ class DT_Roles_Plugin {
      * @return void
      */
     public function i18n() {
-        load_plugin_textdomain( 'roles_plugin', false, trailingslashit( dirname( plugin_basename( __FILE__ ) ) ). 'languages' );
+        load_plugin_textdomain( 'dt_roles_tiles', false, trailingslashit( dirname( plugin_basename( __FILE__ ) ) ). 'languages' );
     }
 
     /**
@@ -238,7 +241,7 @@ class DT_Roles_Plugin {
      * @return string
      */
     public function __toString() {
-        return 'roles_plugin';
+        return 'dt_roles_tiles';
     }
 
     /**
@@ -249,7 +252,7 @@ class DT_Roles_Plugin {
      * @return void
      */
     public function __clone() {
-        _doing_it_wrong( __FUNCTION__, esc_html__( 'Whoah, partner!', 'roles_plugin' ), '0.1' );
+        _doing_it_wrong( __FUNCTION__, esc_html__( 'Whoah, partner!', 'dt_roles_tiles' ), '0.1' );
     }
 
     /**
@@ -271,7 +274,7 @@ class DT_Roles_Plugin {
      * @return null
      */
     public function __call( $method = '', $args = array() ) {
-        _doing_it_wrong( "roles_plugin::" . esc_html( $method ), 'Method does not exist.', '0.1' );
+        _doing_it_wrong( "dt_roles_tiles::" . esc_html( $method ), 'Method does not exist.', '0.1' );
         unset( $method, $args );
         return null;
     }
@@ -279,16 +282,16 @@ class DT_Roles_Plugin {
 // end main plugin class
 
 // Register activation hook.
-register_activation_hook( __FILE__, [ 'roles_plugin', 'activation' ] );
-register_deactivation_hook( __FILE__, [ 'roles_plugin', 'deactivation' ] );
+register_activation_hook( __FILE__, [ 'dt_roles_tiles', 'activation' ] );
+register_deactivation_hook( __FILE__, [ 'dt_roles_tiles', 'deactivation' ] );
 
-function roles_plugin_hook_admin_notice() {
+function dt_roles_tiles_hook_admin_notice() {
     global $dt_roles_required_dt_theme_version;
     $wp_theme = wp_get_theme();
     $current_version = $wp_theme->version;
-    $message = __( "'Disciple Tools - Roles Plugin' plugin requires 'Disciple Tools' theme to work. Please activate 'Disciple Tools' theme or make sure it is latest version.", "roles_plugin" );
+    $message = __( "'Disciple Tools - Roles Plugin' plugin requires 'Disciple Tools' theme to work. Please activate 'Disciple Tools' theme or make sure it is latest version.", "dt_roles_tiles" );
     if ( $wp_theme->get_template() === "disciple-tools-theme" ){
-        $message .= sprintf( esc_html__( 'Current Disciple Tools version: %1$s, required version: %2$s', 'roles_plugin' ), esc_html( $current_version ), esc_html( $dt_roles_required_dt_theme_version ) );
+        $message .= sprintf( esc_html__( 'Current Disciple Tools version: %1$s, required version: %2$s', 'dt_roles_tiles' ), esc_html( $current_version ), esc_html( $dt_roles_required_dt_theme_version ) );
     }
     // Check if it's been dismissed...
     if ( ! get_option( 'dismissed-dt-roles', false ) ) { ?>
