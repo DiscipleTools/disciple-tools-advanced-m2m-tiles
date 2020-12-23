@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Disciple Tools - Roles Tiles
+ * Plugin Name: Disciple Tools - Role Tiles
  * Plugin URI: https://github.com/DiscipleTools/disciple-tools-roles
  * Description: Disciple Tools - Roles Tiles plugin adds specific supporting tile for different roles.
  *
