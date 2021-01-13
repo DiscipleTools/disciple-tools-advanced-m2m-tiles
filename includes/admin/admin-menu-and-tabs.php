@@ -58,8 +58,8 @@ class DT_Advanced_M2M_Tiles_Menu {
      * @since 0.1
      */
     public function register_menu() {
-        add_menu_page( __( 'Extensions (DT)', 'disciple-tools-advanced-m2m-tiles' ), __( 'Extensions (DT)', 'disciple-tools-advanced-m2m-tiles' ), 'manage_dt', 'dt_extensions', [ $this, 'extensions_menu' ], 'dashicons-admin-generic', 59 );
-        add_submenu_page( 'dt_extensions', __( 'Roles Plugin', 'disciple-tools-advanced-m2m-tiles' ), __( 'Roles Plugin', 'disciple-tools-advanced-m2m-tiles' ), 'manage_dt', $this->token, [ $this, 'content' ] );
+        add_menu_page( 'Extensions (DT)', 'Extensions (DT)', 'manage_dt', 'dt_extensions', [ $this, 'extensions_menu' ], 'dashicons-admin-generic', 59 );
+        add_submenu_page( 'dt_extensions', 'Advanced M2M Tiles', 'Advanced M2M Tiles', 'manage_dt', $this->token, [ $this, 'content' ] );
     }
 
     /**
@@ -106,10 +106,10 @@ class DT_Advanced_M2M_Tiles_Menu {
 
     public function display_content() {
         ?>
-        <h2>Roles Tiles Settings</h2>
+        <h2>Advanced M2M Tiles Settings</h2>
         <div class="wrap">
             <div id="poststuff">
-                <div id="post-body" class="metabox-holder columns-2">
+                <div id="post-body" class="metabox-holder columns-1">
                     <div id="post-body-content">
                         <!-- Main Column -->
 
@@ -117,13 +117,6 @@ class DT_Advanced_M2M_Tiles_Menu {
 
                         <!-- End Main Column -->
                     </div><!-- end post-body-content -->
-                    <div id="postbox-container-1" class="postbox-container">
-                        <!-- Right Column -->
-
-                        <?php // $this->right_column() ?>
-
-                        <!-- End Right Column -->
-                    </div><!-- postbox-container 1 -->
                     <div id="postbox-container-2" class="postbox-container">
                     </div><!-- postbox-container 2 -->
                 </div><!-- post-body meta box container -->
@@ -173,26 +166,6 @@ class DT_Advanced_M2M_Tiles_Menu {
             </table>
         </form>
         <br>
-        <?php
-    }
-
-    public function right_column() {
-        ?>
-        <!-- Box -->
-        <table class="widefat striped">
-            <thead>
-            <th>Information</th>
-            </thead>
-            <tbody>
-            <tr>
-                <td>
-                    Content
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <br>
-        <!-- End Box -->
         <?php
     }
 }

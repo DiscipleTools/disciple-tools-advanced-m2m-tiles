@@ -1,7 +1,7 @@
 <?php
 if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
-class DT_Roles_Banners {
+class DT_Advanced_M2M_Tiles_Banners {
     public $js_file = 'roles.js';
     public $plugin_url;
 
@@ -331,6 +331,6 @@ class DT_Roles_Banners {
     }
 
 }
-new DT_Roles_Banners();
+new DT_Advanced_M2M_Tiles_Banners();
 
 

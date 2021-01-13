@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Disciple Tools - Advanced M2M Tiles
  * Plugin URI: https://github.com/DiscipleTools/disciple-tools-advanced-m2m-tiles
- * Description: Disciple Tools - Roles Tiles plugin adds specific supporting tile for different roles.
+ * Description: Disciple Tools - Advanced M2M Tiles adds specific supporting tiles for different roles.
  * Version:  1.0
  * Author URI: https://github.com/DiscipleTools
  * GitHub Plugin URI: https://github.com/DiscipleTools/disciple-tools-advanced-m2m-tiles
@@ -285,7 +285,7 @@ class DT_Advanced_M2M_Tiles {
      * @return null
      */
     public function __call( $method = '', $args = array() ) {
-        _doing_it_wrong( "dt_roles_tiles::" . esc_html( $method ), 'Method does not exist.', '0.1' );
+        _doing_it_wrong( "DT_Advanced_M2M_Tiles::" . esc_html( $method ), 'Method does not exist.', '0.1' );
         unset( $method, $args );
         return null;
     }
@@ -297,9 +297,9 @@ function dt_roles_tiles_hook_admin_notice() {
     global $dt_roles_required_dt_theme_version;
     $wp_theme = wp_get_theme();
     $current_version = $wp_theme->version;
-    $message = __( "'Disciple Tools - Roles Plugin' plugin requires 'Disciple Tools' theme to work. Please activate 'Disciple Tools' theme or make sure it is latest version.", "disciple-tools-advanced-m2m-tiles" );
+    $message =  "'Disciple Tools - Advanced M2M Tiles' plugin requires 'Disciple Tools' theme to work. Please activate 'Disciple Tools' theme or make sure it is latest version.";
     if ( $wp_theme->get_template() === "disciple-tools-theme" ){
-        $message .= sprintf( esc_html__( 'Current Disciple Tools version: %1$s, required version: %2$s', 'disciple-tools-advanced-m2m-tiles' ), esc_html( $current_version ), esc_html( $dt_roles_required_dt_theme_version ) );
+        $message .= sprintf( esc_html( 'Current Disciple Tools version: %1$s, required version: %2$s' ), esc_html( $current_version ), esc_html( $dt_roles_required_dt_theme_version ) );
     }
     // Check if it's been dismissed...
     if ( ! get_option( 'dismissed-dt-roles', false ) ) { ?>
