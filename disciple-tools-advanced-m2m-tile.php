@@ -3,7 +3,7 @@
  * Plugin Name: Disciple Tools - Advanced M2M Tiles
  * Plugin URI: https://github.com/DiscipleTools/disciple-tools-advanced-m2m-tiles
  * Description: Disciple Tools - Advanced M2M Tiles adds specific supporting tiles for different roles.
- * Version:  1.0
+ * Version:  1.1
  * Author URI: https://github.com/DiscipleTools
  * GitHub Plugin URI: https://github.com/DiscipleTools/disciple-tools-advanced-m2m-tiles
  * Requires at least: 4.7.0
@@ -153,7 +153,7 @@ class DT_Advanced_M2M_Tiles {
 
         // Admin and settings variables
         $this->token             = 'disciple-tools-advanced-m2m-tiles';
-        $this->version             = '1.0';
+        $this->version             = '1.1';
 
     }
 
@@ -297,7 +297,7 @@ function dt_roles_tiles_hook_admin_notice() {
     global $dt_roles_required_dt_theme_version;
     $wp_theme = wp_get_theme();
     $current_version = $wp_theme->version;
-    $message =  "'Disciple Tools - Advanced M2M Tiles' plugin requires 'Disciple Tools' theme to work. Please activate 'Disciple Tools' theme or make sure it is latest version.";
+    $message = "'Disciple Tools - Advanced M2M Tiles' plugin requires 'Disciple Tools' theme to work. Please activate 'Disciple Tools' theme or make sure it is latest version.";
     if ( $wp_theme->get_template() === "disciple-tools-theme" ){
         $message .= sprintf( esc_html( 'Current Disciple Tools version: %1$s, required version: %2$s' ), esc_html( $current_version ), esc_html( $dt_roles_required_dt_theme_version ) );
     }
