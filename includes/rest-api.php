@@ -1,7 +1,7 @@
 <?php
+if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
-
-class DT_Roles_Plugin_Endpoints {
+class DT_Advanced_M2M_Tiles_Endpoints {
     public $permissions = [ 'dt_all_access_contacts' ];
 
     private static $_instance = null;

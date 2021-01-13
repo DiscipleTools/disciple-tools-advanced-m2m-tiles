@@ -1,17 +1,16 @@
 <?php
 /**
- * Plugin Name: Disciple Tools - Role Tiles
- * Plugin URI: https://github.com/DiscipleTools/disciple-tools-roles
+ * Plugin Name: Disciple Tools - Advanced M2M Tiles
+ * Plugin URI: https://github.com/DiscipleTools/disciple-tools-advanced-m2m-tiles
  * Description: Disciple Tools - Roles Tiles plugin adds specific supporting tile for different roles.
- *
- * Version:  0.2
+ * Version:  1.0
  * Author URI: https://github.com/DiscipleTools
- * GitHub Plugin URI: https://github.com/DiscipleTools/disciple-tools-roles
+ * GitHub Plugin URI: https://github.com/DiscipleTools/disciple-tools-advanced-m2m-tiles
  * Requires at least: 4.7.0
  * (Requires 4.7+ because of the integration of the REST API at 4.7 and the security requirements of this milestone version.)
- * Tested up to: 5.4
+ * Tested up to: 5.6
  *
- * @package dt_roles_tiles
+ * @package disciple-tools-advanced-m2m-tiles
  * @link    https://github.com/DiscipleTools
  * @license GPL-2.0 or later
  *          https://www.gnu.org/licenses/gpl-2.0.html
@@ -21,7 +20,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
-$dt_roles_required_dt_theme_version = '0.29.0';
+$dt_roles_required_dt_theme_version = '1.0';
 
 /**
  * Gets the instance of the `dt_roles_tiles` class.
@@ -58,7 +57,7 @@ add_action( 'after_setup_theme', function() {
     require_once( 'includes/dt-hooks.php' ); //allways load
     $is_rest = dt_is_rest();
     if ( !$is_rest || strpos( dt_get_url_path(), 'dt-roles' ) !== false ){
-        return DT_Roles_Plugin::get_instance();
+        return DT_Advanced_M2M_Tiles::get_instance();
     }
     return false;
 }, 50 );
@@ -69,7 +68,7 @@ add_action( 'after_setup_theme', function() {
  * @since  0.1
  * @access public
  */
-class DT_Roles_Plugin {
+class DT_Advanced_M2M_Tiles {
 
     /**
      * Declares public variables
@@ -97,7 +96,7 @@ class DT_Roles_Plugin {
         static $instance = null;
 
         if ( is_null( $instance ) ) {
-            $instance = new DT_Roles_Plugin();
+            $instance = new DT_Advanced_M2M_Tiles();
             $instance->setup();
             $instance->includes();
             $instance->setup_actions();
@@ -127,7 +126,10 @@ class DT_Roles_Plugin {
             require_once( 'includes/admin/admin-menu-and-tabs.php' );
         }
 
-        require_once "includes/tiles.php";
+        require_once( "includes/tiles.php" );
+
+        require_once( 'includes/rest-api.php' );
+        DT_Advanced_M2M_Tiles_Endpoints::instance();
     }
 
     /**
@@ -150,12 +152,9 @@ class DT_Roles_Plugin {
         $this->img_uri      = trailingslashit( $this->dir_uri . 'img' );
 
         // Admin and settings variables
-        $this->token             = 'dt_roles_tiles';
-        $this->version             = '0.2';
+        $this->token             = 'disciple-tools-advanced-m2m-tiles';
+        $this->version             = '1.0';
 
-        // sample rest api class
-        require_once( 'includes/rest-api.php' );
-        DT_Roles_Plugin_Endpoints::instance();
     }
 
     /**
@@ -179,18 +178,18 @@ class DT_Roles_Plugin {
              * Also, see the instructions for version updating to understand the steps involved.
              * @see https://github.com/DiscipleTools/disciple-tools-version-control/wiki/How-to-Update-the-Starter-Plugin
              */
-//            @todo enable this section with your own hosted file
-//            $hosted_json = "https://raw.githubusercontent.com/DiscipleTools/disciple-tools-version-control/master/disciple-tools-starter-plugin-version-control.json";
-//            Puc_v4_Factory::buildUpdateChecker(
-//                $hosted_json,
-//                __FILE__,
-//                'disciple-tools-starter-plugin'
-//            );
+
+            $hosted_json = "https://raw.githubusercontent.com/DiscipleTools/disciple-tools-advanced-m2m-tiles/master/version-control.json";
+            Puc_v4_Factory::buildUpdateChecker(
+                $hosted_json,
+                __FILE__,
+                'disciple-tools-advanced-m2m-tiles'
+            );
         }
 
 
         // Internationalize the text strings used.
-        add_action( 'init', array( $this, 'i18n' ), 2 );
+        add_action( 'after_setup_theme', array( $this, 'i18n' ), 51 );
     }
 
     /**
@@ -230,7 +229,19 @@ class DT_Roles_Plugin {
      * @return void
      */
     public function i18n() {
-        load_plugin_textdomain( 'dt_roles_tiles', false, trailingslashit( dirname( plugin_basename( __FILE__ ) ) ). 'languages' );
+        $domain = 'disciple-tools-advanced-m2m-tiles';
+        $locale = apply_filters(
+            'plugin_locale',
+            ( is_admin() && function_exists( 'get_user_locale' ) ) ? get_user_locale() : get_locale(),
+            $domain
+        );
+
+        $mo_file = $domain . '-' . $locale . '.mo';
+        $path = realpath( dirname( __FILE__ ) . '/languages' );
+
+        if ($path && file_exists( $path )) {
+            load_textdomain( $domain, $path . '/' . $mo_file );
+        }
     }
 
     /**
@@ -241,7 +252,7 @@ class DT_Roles_Plugin {
      * @return string
      */
     public function __toString() {
-        return 'dt_roles_tiles';
+        return 'disciple-tools-advanced-m2m-tiles';
     }
 
     /**
@@ -252,7 +263,7 @@ class DT_Roles_Plugin {
      * @return void
      */
     public function __clone() {
-        _doing_it_wrong( __FUNCTION__, esc_html__( 'Whoah, partner!', 'dt_roles_tiles' ), '0.1' );
+        _doing_it_wrong( __FUNCTION__, esc_html( 'Whoah, partner!' ), '0.1' );
     }
 
     /**
@@ -281,17 +292,14 @@ class DT_Roles_Plugin {
 }
 // end main plugin class
 
-// Register activation hook.
-register_activation_hook( __FILE__, [ 'dt_roles_tiles', 'activation' ] );
-register_deactivation_hook( __FILE__, [ 'dt_roles_tiles', 'deactivation' ] );
 
 function dt_roles_tiles_hook_admin_notice() {
     global $dt_roles_required_dt_theme_version;
     $wp_theme = wp_get_theme();
     $current_version = $wp_theme->version;
-    $message = __( "'Disciple Tools - Roles Plugin' plugin requires 'Disciple Tools' theme to work. Please activate 'Disciple Tools' theme or make sure it is latest version.", "dt_roles_tiles" );
+    $message = __( "'Disciple Tools - Roles Plugin' plugin requires 'Disciple Tools' theme to work. Please activate 'Disciple Tools' theme or make sure it is latest version.", "disciple-tools-advanced-m2m-tiles" );
     if ( $wp_theme->get_template() === "disciple-tools-theme" ){
-        $message .= sprintf( esc_html__( 'Current Disciple Tools version: %1$s, required version: %2$s', 'dt_roles_tiles' ), esc_html( $current_version ), esc_html( $dt_roles_required_dt_theme_version ) );
+        $message .= sprintf( esc_html__( 'Current Disciple Tools version: %1$s, required version: %2$s', 'disciple-tools-advanced-m2m-tiles' ), esc_html( $current_version ), esc_html( $dt_roles_required_dt_theme_version ) );
     }
     // Check if it's been dismissed...
     if ( ! get_option( 'dismissed-dt-roles', false ) ) { ?>

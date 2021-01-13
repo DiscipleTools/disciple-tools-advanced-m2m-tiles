@@ -1,7 +1,5 @@
 <?php
-if ( !defined( 'ABSPATH' ) ) {
-    exit;
-} // Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 add_filter( "dt_custom_fields_settings", "custom_fields", 1, 2 );
 
@@ -9,23 +7,23 @@ add_filter( "dt_custom_fields_settings", "custom_fields", 1, 2 );
 function custom_fields( array $fields, string $post_type = "" ){
     if ( $post_type === "contacts" ) {
         $fields["reason_assigned_to"] = [
-            'name' => __( 'Reason Assigned To', 'dt_roles_tiles' ),
+            'name' => __( 'Reason Assigned To', 'disciple-tools-advanced-m2m-tiles' ),
             'type'        => 'key_select',
             'default' => [
                 'follow-up' => [
-                    'label' => __( "Follow-Up", 'dt_roles_tiles' ),
+                    'label' => __( "Follow-Up", 'disciple-tools-advanced-m2m-tiles' ),
                     'roles' => [ "multiplier" ],
                     'icon' => trailingslashit( plugin_dir_url( __FILE__ ) ) . 'images/meeting.svg',
                     'status' => 'assigned'
                 ],
                 'digital-response' => [
-                    'label' => __( "Digital Response", 'dt_roles_tiles' ),
+                    'label' => __( "Digital Response", 'disciple-tools-advanced-m2m-tiles' ),
                     'roles' => [ "marketer" ],
                     'icon' => get_template_directory_uri() . '/dt-assets/images/socialmedia.svg',
                     'status' => 'assigned'
                 ],
                 'dispatch' => [
-                    'label' => __( "Dispatch", 'dt_roles_tiles' ),
+                    'label' => __( "Dispatch", 'disciple-tools-advanced-m2m-tiles' ),
                     'roles' => [ "dispatcher" ],
                     'icon' => trailingslashit( plugin_dir_url( __FILE__ ) ) . 'images/assign.svg',
                     'status' => 'unassigned'
@@ -33,23 +31,23 @@ function custom_fields( array $fields, string $post_type = "" ){
             ],
         ];
         if ( isset( $fields["quick_button_no_answer"] ) ) {
-            $fields["quick_button_no_answer"]["short_name"] = __( 'No Answer', 'dt_roles_tiles' );
+            $fields["quick_button_no_answer"]["short_name"] = __( 'No Answer', 'disciple-tools-advanced-m2m-tiles' );
             $fields["quick_button_no_answer"]["icon"] = trailingslashit( plugin_dir_url( __FILE__ ) ) . 'images/phone-no-answer.svg';
         }
         if ( isset( $fields["quick_button_contact_established"] ) ){
-            $fields["quick_button_contact_established"]["short_name"] = __( 'Talked', 'dt_roles_tiles' );
+            $fields["quick_button_contact_established"]["short_name"] = __( 'Talked', 'disciple-tools-advanced-m2m-tiles' );
             $fields["quick_button_contact_established"]["icon"] = trailingslashit( plugin_dir_url( __FILE__ ) ) . 'images/phone-successful.svg';
         }
         if ( isset( $fields["quick_button_meeting_scheduled"] ) ){
-            $fields["quick_button_meeting_scheduled"]["short_name"] = __( 'Scheduled', 'dt_roles_tiles' );
+            $fields["quick_button_meeting_scheduled"]["short_name"] = __( 'Scheduled', 'disciple-tools-advanced-m2m-tiles' );
             $fields["quick_button_meeting_scheduled"]["icon"] = trailingslashit( plugin_dir_url( __FILE__ ) ) . 'images/calendar-clock.svg';
         }
         if ( isset( $fields["quick_button_meeting_complete"] ) ){
-            $fields["quick_button_meeting_complete"]["short_name"] = __( 'Complete', 'dt_roles_tiles' );
+            $fields["quick_button_meeting_complete"]["short_name"] = __( 'Complete', 'disciple-tools-advanced-m2m-tiles' );
             $fields["quick_button_meeting_complete"]["icon"] = trailingslashit( plugin_dir_url( __FILE__ ) ) . 'images/meeting.svg';
         }
         if ( isset( $fields["quick_button_no_show"] ) ){
-            $fields["quick_button_no_show"]["short_name"] = __( 'No-Show', 'dt_roles_tiles' );
+            $fields["quick_button_no_show"]["short_name"] = __( 'No-Show', 'disciple-tools-advanced-m2m-tiles' );
             $fields["quick_button_no_show"]["icon"] = trailingslashit( plugin_dir_url( __FILE__ ) ) . 'images/calendar-cancel.svg';
         }
 //        $fields["quick_button_message_sent"] = [

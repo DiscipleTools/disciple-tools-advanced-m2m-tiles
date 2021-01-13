@@ -1,24 +1,23 @@
 <?php
 /**
- * DT_Roles_Plugin_Menu class for the admin page
+ * DT_Advanced_M2M_Tiles_Menu class for the admin page
  *
- * @class       DT_Roles_Plugin_Menu
+ * @class       DT_Advanced_M2M_Tiles_Menu
  * @version     0.1.0
  * @since       0.1.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) { exit; // Exit if accessed directly
-}
+if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 /**
  * Initialize menu class
  */
-DT_Roles_Plugin_Menu::instance();
+DT_Advanced_M2M_Tiles_Menu::instance();
 
 /**
- * Class DT_Roles_Plugin_Menu
+ * Class DT_Advanced_M2M_Tiles_Menu
  */
-class DT_Roles_Plugin_Menu {
+class DT_Advanced_M2M_Tiles_Menu {
 
     public $token = 'dt_roles_tiles';
     public $fields = [ "assigned_to", "my_actions" ];
@@ -26,13 +25,13 @@ class DT_Roles_Plugin_Menu {
     private static $_instance = null;
 
     /**
-     * DT_Roles_Plugin_Menu Instance
+     * DT_Advanced_M2M_Tiles_Menu Instance
      *
-     * Ensures only one instance of DT_Roles_Plugin_Menu is loaded or can be loaded.
+     * Ensures only one instance of DT_Advanced_M2M_Tiles_Menu is loaded or can be loaded.
      *
      * @since 0.1.0
      * @static
-     * @return DT_Roles_Plugin_Menu instance
+     * @return DT_Advanced_M2M_Tiles_Menu instance
      */
     public static function instance() {
         if ( is_null( self::$_instance ) ) {
@@ -59,8 +58,8 @@ class DT_Roles_Plugin_Menu {
      * @since 0.1
      */
     public function register_menu() {
-        add_menu_page( __( 'Extensions (DT)', 'dt_roles_tiles' ), __( 'Extensions (DT)', 'dt_roles_tiles' ), 'manage_dt', 'dt_extensions', [ $this, 'extensions_menu' ], 'dashicons-admin-generic', 59 );
-        add_submenu_page( 'dt_extensions', __( 'Roles Plugin', 'dt_roles_tiles' ), __( 'Roles Plugin', 'dt_roles_tiles' ), 'manage_dt', $this->token, [ $this, 'content' ] );
+        add_menu_page( __( 'Extensions (DT)', 'disciple-tools-advanced-m2m-tiles' ), __( 'Extensions (DT)', 'disciple-tools-advanced-m2m-tiles' ), 'manage_dt', 'dt_extensions', [ $this, 'extensions_menu' ], 'dashicons-admin-generic', 59 );
+        add_submenu_page( 'dt_extensions', __( 'Roles Plugin', 'disciple-tools-advanced-m2m-tiles' ), __( 'Roles Plugin', 'disciple-tools-advanced-m2m-tiles' ), 'manage_dt', $this->token, [ $this, 'content' ] );
     }
 
     /**
