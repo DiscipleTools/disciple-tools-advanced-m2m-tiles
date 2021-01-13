@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: Disciple Tools - Advanced M2M Tiles\n"
-"POT-Creation-Date: 2021-01-13 11:59-0700\n"
+"POT-Creation-Date: 2021-01-13 12:12-0700\n"
 "PO-Revision-Date: 2021-01-13 11:58-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -21,26 +21,6 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.min.js\n"
 "X-Poedit-SearchPathExcluded-1: vendor\n"
-
-#: disciple-tools-advanced-m2m-tile.php:300
-msgid ""
-"'Disciple Tools - Advanced M2M Tiles' plugin requires 'Disciple Tools' theme to "
-"work. Please activate 'Disciple Tools' theme or make sure it is latest "
-"version."
-msgstr ""
-
-#: disciple-tools-advanced-m2m-tile.php:302
-#, php-format
-msgid "Current Disciple Tools version: %1$s, required version: %2$s"
-msgstr ""
-
-#: includes/admin/admin-menu-and-tabs.php:61
-msgid "Extensions (DT)"
-msgstr ""
-
-#: includes/admin/admin-menu-and-tabs.php:62
-msgid "Roles Plugin"
-msgstr ""
 
 #: includes/admin/admin-menu-and-tabs.php:78
 msgid "You do not have sufficient permissions to access this page."
@@ -145,7 +125,7 @@ msgstr ""
 
 #. Description of the plugin/theme
 msgid ""
-"Disciple Tools - Roles Tiles plugin adds specific supporting tile for "
+"Disciple Tools - Advanced M2M Tiles adds specific supporting tiles for "
 "different roles."
 msgstr ""
 
