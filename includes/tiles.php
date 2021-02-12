@@ -25,11 +25,11 @@ class DT_Advanced_M2M_Tiles_Banners {
             'dt_roles_script', 'roles_settings', [
                 "template_dir_uri" => get_template_directory_uri(),
                 "translations" => [
-                    "all" => __( "All", 'disciple-tools-advanced-m2m-tiles' ),
-                    "ready" => __( "Ready", 'disciple-tools-advanced-m2m-tiles' ),
-                    "recent" => __( "Recent", 'disciple-tools-advanced-m2m-tiles' ),
-                    "location" => __( "Location", 'disciple-tools-advanced-m2m-tiles' ),
-                    "assign" => __( "Assign", 'disciple-tools-advanced-m2m-tiles' ),
+                    "all" => __( "All", "disciple-tools-advanced-m2m-tiles" ),
+                    "ready" => __( "Ready", "disciple-tools-advanced-m2m-tiles" ),
+                    "recent" => __( "Recent", "disciple-tools-advanced-m2m-tiles" ),
+                    "location" => __( "Location", "disciple-tools-advanced-m2m-tiles" ),
+                    "assign" => __( "Assign", "disciple-tools-advanced-m2m-tiles" ),
                 ],
                 "dispatcher_id" => dt_get_base_user( true )
             ]
@@ -47,7 +47,7 @@ class DT_Advanced_M2M_Tiles_Banners {
                     <span class="loading-spinner"></span>
                 </h3>
                 <p><?php echo esc_html( $field_settings["reason_assigned_to"]["description"] ?? '' )?></p>
-                <p><?php esc_html_e( 'Choose an option:', 'disciple-tools-advanced-m2m-tiles' )?></p>
+                <p><?php esc_html_e( 'Choose an option:', "disciple-tools-advanced-m2m-tiles" )?></p>
 
 
                 <div class="small button-group" style="display: block" id="reason_assigned_to-options">
@@ -61,7 +61,7 @@ class DT_Advanced_M2M_Tiles_Banners {
                 </div>
 
                 <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-                    <?php echo esc_html__( 'Cancel', 'disciple-tools-advanced-m2m-tiles' )?>
+                    <?php echo esc_html__( 'Cancel', "disciple-tools-advanced-m2m-tiles" )?>
                 </button>
                 <button class="close-button" data-close aria-label="Close modal" type="button">
                     <span aria-hidden="true">&times;</span>
@@ -74,7 +74,7 @@ class DT_Advanced_M2M_Tiles_Banners {
             <section class="small-12 grid-y grid-margin-y cell dispatcher-tile">
                 <div class="bordered-box">
                     <div class="cell dt-filter-tabs">
-                        <h4 class="section-header"><?php esc_html_e( 'Assign For', 'disciple-tools-advanced-m2m-tiles' ); ?> <span id="dispatch-tile-loader" style="display: inline-block; margin-left: 10px" class="loading-spinner"></span>
+                        <h4 class="section-header"><?php esc_html_e( 'Assign For', "disciple-tools-advanced-m2m-tiles" ); ?> <span id="dispatch-tile-loader" style="display: inline-block; margin-left: 10px" class="loading-spinner"></span>
                             <button class="section-chevron chevron_down">
                                 <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
                             </button>
@@ -124,7 +124,7 @@ class DT_Advanced_M2M_Tiles_Banners {
                                     </div>
                                 </div>
                                 <div class="" id="other-assign-to-typeahead" style="display:none;">
-                                    <strong><?php esc_html_e( 'Search', 'disciple-tools-advanced-m2m-tiles' ); ?></strong><br>
+                                    <strong><?php esc_html_e( 'Search', "disciple-tools-advanced-m2m-tiles" ); ?></strong><br>
                                     <div class="">
                                         <var id="assign-result-container" class="result-container assign-result-container"></var>
                                         <div id="assign_t" name="form-assign">
@@ -132,7 +132,7 @@ class DT_Advanced_M2M_Tiles_Banners {
                                                 <div class="typeahead__field">
                                                     <span class="typeahead__query">
                                                         <input class="js-typeahead-assign input-height" dir="auto"
-                                                               name="assign[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'disciple-tools-advanced-m2m-tiles' ) ?>"
+                                                               name="assign[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', "disciple-tools-advanced-m2m-tiles" ) ?>"
                                                                autocomplete="off">
                                                     </span>
                                                     <span class="typeahead__button">
@@ -205,13 +205,13 @@ class DT_Advanced_M2M_Tiles_Banners {
                         <?php if ( $contact["assigned_to"]["id"] != get_current_user_id() && dt_current_user_has_role( "multiplier" ) ) : ?>
                             <button class="action-button" id="claim">
                                 <img src="<?php echo esc_url( $this->plugin_url . "images/volunteer.svg" ); ?>"
-                                ><span class="action-text"><?php esc_html_e( 'Claim for follow-up', 'disciple-tools-advanced-m2m-tiles' ); ?></span>
+                                ><span class="action-text"><?php esc_html_e( 'Claim for follow-up', "disciple-tools-advanced-m2m-tiles" ); ?></span>
                             </button>
                         <?php endif; ?>
                         <?php if ( dt_current_user_has_role( 'marketer' ) ) : ?>
                             <button class="action-button" id="mark_dispatch_needed">
                                 <img src="<?php echo esc_url( $this->plugin_url . "images/arrow-check-up-solid.svg" ); ?>"
-                                ><span class="action-text"><?php esc_html_e( 'Ready for Dispatch', 'disciple-tools-advanced-m2m-tiles' ); ?></span>
+                                ><span class="action-text"><?php esc_html_e( 'Ready for Dispatch', "disciple-tools-advanced-m2m-tiles" ); ?></span>
                             </button>
                         <?php endif; ?>
                         <span class="separator"></span>
