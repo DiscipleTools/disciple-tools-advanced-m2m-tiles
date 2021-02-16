@@ -3,7 +3,7 @@
  * Plugin Name: Disciple Tools - Advanced M2M Tiles
  * Plugin URI: https://github.com/DiscipleTools/disciple-tools-advanced-m2m-tiles
  * Description: Disciple Tools - Advanced M2M Tiles adds specific supporting tiles for different roles.
- * Version:  1.1
+ * Version:  1.2
  * Author URI: https://github.com/DiscipleTools
  * GitHub Plugin URI: https://github.com/DiscipleTools/disciple-tools-advanced-m2m-tiles
  * Requires at least: 4.7.0
@@ -165,29 +165,6 @@ class DT_Advanced_M2M_Tiles {
      * @return void
      */
     private function setup_actions() {
-
-        if ( is_admin() ){
-            // Check for plugin updates
-            if ( ! class_exists( 'Puc_v4_Factory' ) ) {
-                require( get_template_directory() . '/dt-core/libraries/plugin-update-checker/plugin-update-checker.php' );
-            }
-            /**
-             * Below is the publicly hosted .json file that carries the version information. This file can be hosted
-             * anywhere as long as it is publicly accessible. You can download the version file listed below and use it as
-             * a template.
-             * Also, see the instructions for version updating to understand the steps involved.
-             * @see https://github.com/DiscipleTools/disciple-tools-version-control/wiki/How-to-Update-the-Starter-Plugin
-             */
-
-            $hosted_json = "https://raw.githubusercontent.com/DiscipleTools/disciple-tools-advanced-m2m-tiles/master/version-control.json";
-            Puc_v4_Factory::buildUpdateChecker(
-                $hosted_json,
-                __FILE__,
-                'disciple-tools-advanced-m2m-tiles'
-            );
-        }
-
-
         // Internationalize the text strings used.
         add_action( 'after_setup_theme', array( $this, 'i18n' ), 51 );
     }
@@ -336,3 +313,28 @@ if ( !function_exists( "dt_hook_ajax_notice_handler" )){
         }
     }
 }
+
+
+/**
+ * Check for plugin updates even when the active theme is not Disciple.Tools
+ * This enables updates on multisites where the active theme is not Disciple.Tools
+ */
+add_action( 'plugins_loaded', function (){
+    if ( is_admin() ){
+        // Check for plugin updates
+        if ( ! class_exists( 'Puc_v4_Factory' ) ) {
+            if ( file_exists( get_template_directory() . '/dt-core/libraries/plugin-update-checker/plugin-update-checker.php' )){
+                require( get_template_directory() . '/dt-core/libraries/plugin-update-checker/plugin-update-checker.php' );
+            }
+        }
+        if ( class_exists( 'Puc_v4_Factory' ) ){
+            $hosted_json = "https://raw.githubusercontent.com/DiscipleTools/disciple-tools-advanced-m2m-tiles/master/version-control.json";
+            Puc_v4_Factory::buildUpdateChecker(
+                $hosted_json,
+                __FILE__,
+                'disciple-tools-advanced-m2m-tiles'
+            );
+
+        }
+    }
+} );
