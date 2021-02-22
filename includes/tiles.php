@@ -202,7 +202,7 @@ class DT_Advanced_M2M_Tiles_Banners {
                         </div>
                         <!--                    <span class="separator"></span>-->
                         <?php do_action( "dt_record_actions_bar_buttons_start", $post_type, $contact, $roles_settings ) ?>
-                        <?php if ( $contact["assigned_to"]["id"] != get_current_user_id() && dt_current_user_has_role( "multiplier" ) ) : ?>
+                        <?php if ( isset( $contact["assigned_to"]["id"] ) && $contact["assigned_to"]["id"] != get_current_user_id() && dt_current_user_has_role( "multiplier" ) ) : ?>
                             <button class="action-button" id="claim">
                                 <img src="<?php echo esc_url( $this->plugin_url . "images/volunteer.svg" ); ?>"
                                 ><span class="action-text"><?php esc_html_e( 'Claim for follow-up', "disciple-tools-advanced-m2m-tiles" ); ?></span>
