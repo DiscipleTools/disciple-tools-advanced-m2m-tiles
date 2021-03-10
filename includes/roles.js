@@ -3,7 +3,7 @@
 
   let field_settings = window.detailsSettings.post_settings.fields
   let data = null
-  if (_.get(window.detailsSettings, "post_fields.location_grid")){
+  if (window.lodash.get(window.detailsSettings, "post_fields.location_grid")){
     data = {location_ids: window.detailsSettings.post_fields.location_grid.map(l=>l.id)}
   }
   let dispatch_users_promise = null
@@ -32,8 +32,8 @@
   let defined_list_section = $('#defined-lists')
   let search_section = $('#other-assign-to-typeahead')
   function display_dispatch_tab( tab = 'follow-up' ){
-    let filters = `<a data-id="all" style="color: black; font-weight: bold">${_.escape(roles_settings.translations.all)}</a> | `
-    let reasons_assigned = _.get( field_settings, "reason_assigned_to.default" );
+    let filters = `<a data-id="all" style="color: black; font-weight: bold">${window.lodash.escape(roles_settings.translations.all)}</a> | `
+    let reasons_assigned = window.lodash.get( field_settings, "reason_assigned_to.default" );
 
     if ( tab === "other" ){
         defined_list_section.hide()
@@ -50,9 +50,9 @@
         location: users_with_role.concat().filter(m=>m.location!==null).sort((a,b)=>a.location-b.location)
       }
       populate_user_list( users_with_role )
-      filters += filter_options.ready.length ? `<a data-id="ready">${_.escape(roles_settings.translations.ready)}</a> | ` : ''
-      filters += filter_options.recent.length ? `<a data-id="recent">${_.escape(roles_settings.translations.recent)}</a> | ` : ''
-      filters += filter_options.location.length ? `<a data-id="location">${_.escape(roles_settings.translations.location)}</a> | ` : ''
+      filters += filter_options.ready.length ? `<a data-id="ready">${window.lodash.escape(roles_settings.translations.ready)}</a> | ` : ''
+      filters += filter_options.recent.length ? `<a data-id="recent">${window.lodash.escape(roles_settings.translations.recent)}</a> | ` : ''
+      filters += filter_options.location.length ? `<a data-id="location">${window.lodash.escape(roles_settings.translations.location)}</a> | ` : ''
       list_filters.html(filters)
 
       $('#user-list-filters a').on('click', function () {
@@ -70,22 +70,22 @@
     users.forEach( m => {
       user_rows += `<div class="assigned-to-row" dir="auto">
         <span>
-          <span class="avatar"><img style="vertical-align: text-bottom" src="${_.escape( m.avatar )}"/></span>
-          ${_.escape(m.name)}
+          <span class="avatar"><img style="vertical-align: text-bottom" src="${window.lodash.escape( m.avatar )}"/></span>
+          ${window.lodash.escape(m.name)}
         </span>
-        ${ m.status_color ? `<span class="status-square" style="background-color: ${ _.escape(m.status_color) }">&nbsp;</span>` : '' }
+        ${ m.status_color ? `<span class="status-square" style="background-color: ${ window.lodash.escape(m.status_color) }">&nbsp;</span>` : '' }
         ${ m.update_needed ? `
           <span>
-            <img style="height: 12px;" src="${_.escape(window.wpApiShare.template_dir)}/dt-assets/images/broken.svg"/>
-            <span style="font-size: 14px">${ _.escape(m.update_needed) }</span>
+            <img style="height: 12px;" src="${window.lodash.escape(window.wpApiShare.template_dir)}/dt-assets/images/broken.svg"/>
+            <span style="font-size: 14px">${ window.lodash.escape(m.update_needed) }</span>
           </span>` : ''
         }
-        ${ m.best_location_match ? `<span>(${ _.escape(m.best_location_match) })</span>` : ''
+        ${ m.best_location_match ? `<span>(${ window.lodash.escape(m.best_location_match) })</span>` : ''
 
         }
         <div style="flex-grow: 1"></div>
-        <button class="button hollow tiny assign-user-button" data-id="${ _.escape(m.ID) }" style="margin-bottom: 3px">
-           ${_.escape(roles_settings.translations.assign)}
+        <button class="button hollow tiny assign-user-button" data-id="${ window.lodash.escape(m.ID) }" style="margin-bottom: 3px">
+           ${window.lodash.escape(roles_settings.translations.assign)}
         </button>
       </div>
       `
@@ -97,7 +97,7 @@
   $(document).on('click', '.assign-user-button', function () {
     let user_id = $(this).data('id')
     $('#dispatch-tile-loader').addClass('active')
-    let selected_reason = _.get(field_settings, `reason_assigned_to.default[${selected_dispatch_tab}]`, {})
+    let selected_reason = window.lodash.get(field_settings, `reason_assigned_to.default[${selected_dispatch_tab}]`, {})
     API.update_post(
       'contacts',
       window.detailsSettings.post_fields.ID,
@@ -110,7 +110,7 @@
       $('#dispatch-tile-loader').removeClass('active')
       $('#reason_assigned_to').html(`(${selected_reason.label || ''})`)
       setStatus(response)
-      $(`.js-typeahead-assigned_to`).val(_.escape(response.assigned_to.display)).blur()
+      $(`.js-typeahead-assigned_to`).val(window.lodash.escape(response.assigned_to.display)).blur()
     })
   })
 
@@ -120,7 +120,7 @@
   $('#search-users-input').on('input', function () {
     $( '#user-list-filters a' ).css("color","").css("font-weight","")
     let search_text = $(this).val().normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase()
-    let reasons_assigned = _.get( field_settings, "reason_assigned_to.default" );
+    let reasons_assigned = window.lodash.get( field_settings, "reason_assigned_to.default" );
     let users_with_role = dispatch_users.filter(u => reasons_assigned[selected_dispatch_tab].roles.some(r => u.roles.includes(r)))
     let match_name = users_with_role.filter(u =>
       u.name.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase().includes( search_text )
@@ -145,23 +145,23 @@
         return `<div class="assigned-to-row" dir="auto">
             <span>
                 <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
-                ${_.escape( item.name )}
+                ${window.lodash.escape( item.name )}
             </span>
-            ${ item.status_color ? `<span class="status-square" style="background-color: ${_.escape(item.status_color)};">&nbsp;</span>` : '' }
+            ${ item.status_color ? `<span class="status-square" style="background-color: ${window.lodash.escape(item.status_color)};">&nbsp;</span>` : '' }
             ${ item.update_needed.length > 0 ? `<span>
-              <img style="height: 12px;" src="${_.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
-              <span style="font-size: 14px">${_.escape(item.update_needed)}</span>
+              <img style="height: 12px;" src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
+              <span style="font-size: 14px">${window.lodash.escape(item.update_needed)}</span>
             </span>` : '' }
           </div>`
       },
       dynamic: true,
       hint: true,
-      emptyTemplate: _.escape(window.wpApiShare.translations.no_records_found),
+      emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
       callback: {
         onClick: function(node, a, item){
           API.update_post('contacts', window.detailsSettings.post_fields.ID, {assigned_to: 'user-' + item.ID}).then(function (response) {
             setStatus(response)
-            $(`.js-typeahead-assigned_to`).val(_.escape(response.assigned_to.display)).blur()
+            $(`.js-typeahead-assigned_to`).val(window.lodash.escape(response.assigned_to.display)).blur()
           }).catch(err => { console.error(err) })
         },
         onResult: function (node, query, result, resultCount) {
@@ -172,7 +172,7 @@
           $('.assign-result-container').html("");
         },
         onReady: function () {
-          // if (_.get(contact,  "assigned_to.display")){
+          // if (window.lodash.get(contact,  "assigned_to.display")){
           //   $('.js-typeahead-assigned_to').val(contact.assigned_to.display)
           // }
           // $('.js-typeahead-assigned_to').trigger('propertychange.typeahead')
@@ -194,8 +194,8 @@
     }).then(response=>{
       $('#action-bar-loader').removeClass('active')
       setStatus(response)
-      $(`.js-typeahead-assigned_to`).val(_.escape(response.assigned_to.display)).blur()
-      $('#reason_assigned_to').html(`(${_.get(field_settings, `reason_assigned_to.default["dispatch"].label`, '')})`)
+      $(`.js-typeahead-assigned_to`).val(window.lodash.escape(response.assigned_to.display)).blur()
+      $('#reason_assigned_to').html(`(${window.lodash.get(field_settings, `reason_assigned_to.default["dispatch"].label`, '')})`)
     })
   })
 
@@ -212,8 +212,8 @@
     }).then(response=>{
       $('#action-bar-loader').removeClass('active')
       setStatus(response)
-      $(`.js-typeahead-assigned_to`).val(_.escape(response.assigned_to.display)).blur()
-      $('#reason_assigned_to').html(`(${_.get(field_settings, `reason_assigned_to.default["follow-up"].label`, '')})`)
+      $(`.js-typeahead-assigned_to`).val(window.lodash.escape(response.assigned_to.display)).blur()
+      $('#reason_assigned_to').html(`(${window.lodash.get(field_settings, `reason_assigned_to.default["follow-up"].label`, '')})`)
     })
   })
 
@@ -226,7 +226,7 @@
     API.update_post('contacts', window.detailsSettings.post_fields.ID, data)
     .then(data=>{
       if (fieldKey.indexOf("quick_button")>-1){
-        if (_.get(data, "seeker_path.key")){
+        if (window.lodash.get(data, "seeker_path.key")){
           updateCriticalPath(data.seeker_path.key)
         }
       }
@@ -254,7 +254,7 @@
     let field = 'reason_assigned_to'
     $('#reason_assigned_to-modal .loading-spinner').addClass('active')
     let val = $(this).attr('id')
-    let selected_reason = _.get(field_settings, `reason_assigned_to.default[${val}]`, {})
+    let selected_reason = window.lodash.get(field_settings, `reason_assigned_to.default[${val}]`, {})
     let data = {
       "overall_status": selected_reason.status || 'assigned',
       [field]: val
