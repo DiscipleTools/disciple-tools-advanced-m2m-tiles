@@ -28,12 +28,13 @@ class DT_Advanced_M2M_Tiles_Endpoints {
 
 
     public function add_api_routes() {
-        $namespace = 'dt-roles/v1/';
+        $namespace = 'dt-roles/v1';
 
         register_rest_route(
-            $namespace, 'dispatch-lists', [
+            $namespace, '/dispatch-lists', [
                 'methods' => 'GET',
                 'callback' => [ $this, 'get_dispatch_list' ],
+                'permission_callback' => '__return_true',
             ]
         );
     }
