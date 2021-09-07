@@ -50,8 +50,50 @@ class DT_Advanced_M2M_Tiles_Endpoints {
         $user_data = DT_User_Management::get_users( false );
 //        @todo get users that are in contact's loctanios
 //        get multipliers that are of the same gender- meh
-//        get multipliers that are the same language
 
+        $last_assignments = $this->get_assignments();
+        $location_data = $this->get_location_data( $params["location_ids"] );
+
+        $list = [];
+        $workload_status_options = dt_get_site_custom_lists()["user_workload_status"] ?? [];
+        foreach ( $user_data as $user ) {
+            $roles = maybe_unserialize( $user["roles"] );
+            if ( isset( $roles["multiplier"] ) || isset( $roles["dt_admin"] ) || isset( $roles["dispatcher"] ) || isset( $roles["marketer"] )) {
+                $u = [
+                    "name" => $user["display_name"],
+                    "ID" => $user["ID"],
+                    "avatar" => get_avatar_url( $user["ID"], [ 'size' => '16' ] ),
+                    "last_assignment" => $last_assignments[$user["ID"]] ?? null,
+                    "roles" => array_keys( $roles ),
+                    "location" => null,
+                    "languages" => [],
+                ];
+                $user_languages = get_user_option( "user_languages", $user["ID"] );
+                if ( $user_languages ) {
+                    $u["languages"] = $user_languages;
+                }
+                //extra information for the dispatcher
+                $workload_status = $user["workload_status"] ?? null;
+                if ( $workload_status && isset( $workload_status_options[$workload_status]["color"] ) ) {
+                    $u['status'] = $workload_status;
+                    $u['status_color'] = $workload_status_options[$workload_status]["color"];
+                }
+                if ( isset( $location_data[$user["ID"]] ) ){
+                    $u["location"] = $location_data[$user["ID"]]["level"];
+                    $u["best_location_match"] = $location_data[$user["ID"]]["match_name"];
+                }
+
+                $u["update_needed"] = (int) $user["number_update"] ?? 0;
+
+                $list[] = $u;
+            }
+        }
+
+        return $list;
+    }
+
+    private function get_assignments() {
+        global $wpdb;
         $last_assignment_query = $wpdb->get_results( "
             SELECT meta_value as user, MAX(hist_time) as assignment_date
             from $wpdb->dt_activity_log as log
@@ -64,9 +106,15 @@ class DT_Advanced_M2M_Tiles_Endpoints {
             $last_assignments[$user_id] = $assignment["assignment_date"];
         }
 
+        return $last_assignments;
+    }
+
+    private function get_location_data( $location_ids ) {
+        global $wpdb;
+
         $location_data = [];
-        if ( isset( $params["location_ids"] ) ) {
-            foreach ( $params["location_ids"] as $grid_id ){
+        if ( isset( $location_ids ) ) {
+            foreach ( $location_ids as $grid_id ){
                 $location = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->dt_location_grid WHERE grid_id = %s", esc_sql( $grid_id ) ), ARRAY_A );
                 $levels = [];
 
@@ -117,43 +165,6 @@ class DT_Advanced_M2M_Tiles_Endpoints {
                 }
             }
         }
-
-
-        $list = [];
-        $workload_status_options = dt_get_site_custom_lists()["user_workload_status"] ?? [];
-        foreach ( $user_data as $user ) {
-            $roles = maybe_unserialize( $user["roles"] );
-            if ( isset( $roles["multiplier"] ) || isset( $roles["dt_admin"] ) || isset( $roles["dispatcher"] ) || isset( $roles["marketer"] )) {
-                $u = [
-                    "name" => $user["display_name"],
-                    "ID" => $user["ID"],
-                    "avatar" => get_avatar_url( $user["ID"], [ 'size' => '16' ] ),
-                    "last_assignment" => $last_assignments[$user["ID"]] ?? null,
-                    "roles" => array_keys( $roles ),
-                    "location" => null,
-                    "languages" => [],
-                ];
-                $user_languages = get_user_option( "user_languages", $user["ID"] );
-                if ( $user_languages ) {
-                    $u["languages"] = $user_languages;
-                }
-                //extra information for the dispatcher
-                $workload_status = $user["workload_status"] ?? null;
-                if ( $workload_status && isset( $workload_status_options[$workload_status]["color"] ) ) {
-                    $u['status'] = $workload_status;
-                    $u['status_color'] = $workload_status_options[$workload_status]["color"];
-                }
-                if ( isset( $location_data[$user["ID"]] ) ){
-                    $u["location"] = $location_data[$user["ID"]]["level"];
-                    $u["best_location_match"] = $location_data[$user["ID"]]["match_name"];
-                }
-
-                $u["update_needed"] = (int) $user["number_update"] ?? 0;
-
-                $list[] = $u;
-            }
-        }
-
-        return $list;
+        return $location_data;
     }
 }
