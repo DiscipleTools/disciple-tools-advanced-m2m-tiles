@@ -47,7 +47,7 @@ class DT_Advanced_M2M_Tiles_Endpoints {
         global $wpdb;
         $params = $request->get_query_params();
 
-        $user_data = DT_User_Management::get_users( false );
+        $user_data = DT_User_Management::get_users( true );
 //        @todo get users that are in contact's loctanios
 //        get multipliers that are of the same gender- meh
 
