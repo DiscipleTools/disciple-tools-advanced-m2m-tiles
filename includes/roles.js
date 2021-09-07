@@ -35,6 +35,9 @@
     const contact_languages = (window.lodash.get(window.detailsSettings, "post_fields.languages"))
       ? window.detailsSettings.post_fields.languages
       : []
+    const contact_gender = (window.lodash.get(window.detailsSettings, "post_fields.gender"))
+      ? window.detailsSettings.post_fields.gender
+      : { key: null }
 
     let filters = `<a data-id="all" style="color: black; font-weight: bold">${window.lodash.escape(roles_settings.translations.all)}</a> | `
     let reasons_assigned = window.lodash.get( field_settings, "reason_assigned_to.default" );
@@ -52,12 +55,14 @@
         ready: users_with_role.filter(m=>m.status==='active'),
         recent: users_with_role.concat().sort((a,b)=>b.last_assignment-a.last_assignment),
         language: users_with_role.filter(({ languages }) => languages.some(language => contact_languages.includes(language))),
+        gender: users_with_role.filter(m=>m.gender === contact_gender.key),
         location: users_with_role.concat().filter(m=>m.location!==null).sort((a,b)=>a.location-b.location)
       }
       populate_user_list( users_with_role )
       filters += filter_options.ready.length ? `<a data-id="ready">${window.lodash.escape(roles_settings.translations.ready)}</a> | ` : ''
       filters += filter_options.recent.length ? `<a data-id="recent">${window.lodash.escape(roles_settings.translations.recent)}</a> | ` : ''
       filters += filter_options.language.length ? `<a data-id="language">${window.lodash.escape(roles_settings.translations.language)}</a> | ` : ''
+      filters += filter_options.gender.length ? `<a data-id="gender">${window.lodash.escape(roles_settings.translations.gender)}</a> | ` : ''
       filters += filter_options.location.length ? `<a data-id="location">${window.lodash.escape(roles_settings.translations.location)}</a> | ` : ''
       list_filters.html(filters)
 

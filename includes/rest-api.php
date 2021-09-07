@@ -53,6 +53,7 @@ class DT_Advanced_M2M_Tiles_Endpoints {
 
         $last_assignments = $this->get_assignments();
         $location_data = $this->get_location_data( $params["location_ids"] );
+        $gender_data = $this->get_gender_data();
 
         $list = [];
         $workload_status_options = dt_get_site_custom_lists()["user_workload_status"] ?? [];
@@ -67,6 +68,7 @@ class DT_Advanced_M2M_Tiles_Endpoints {
                     "roles" => array_keys( $roles ),
                     "location" => null,
                     "languages" => [],
+                    "gender" => null,
                 ];
                 $user_languages = get_user_option( "user_languages", $user["ID"] );
                 if ( $user_languages ) {
@@ -81,6 +83,9 @@ class DT_Advanced_M2M_Tiles_Endpoints {
                 if ( isset( $location_data[$user["ID"]] ) ){
                     $u["location"] = $location_data[$user["ID"]]["level"];
                     $u["best_location_match"] = $location_data[$user["ID"]]["match_name"];
+                }
+                if ( isset( $gender_data[$user["ID"]] ) ) {
+                    $u["gender"] = $gender_data[$user["ID"]];
                 }
 
                 $u["update_needed"] = (int) $user["number_update"] ?? 0;
@@ -166,5 +171,23 @@ class DT_Advanced_M2M_Tiles_Endpoints {
             }
         }
         return $location_data;
+    }
+
+    private function get_gender_data() {
+        global $wpdb;
+        $gender_data = [];
+
+        $gender_query = $wpdb->get_results( "
+            SELECT user_id, meta_value as gender
+            from $wpdb->usermeta
+            WHERE meta_key = 'wp_user_gender'
+            GROUP by meta_value",
+        ARRAY_A );
+
+        foreach ( $gender_query as $data ){
+            $gender_data[$data["user_id"]] = $data["gender"];
+        }
+
+        return $gender_data;
     }
 }
