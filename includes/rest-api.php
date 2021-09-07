@@ -64,7 +64,6 @@ class DT_Advanced_M2M_Tiles_Endpoints {
             $last_assignments[$user_id] = $assignment["assignment_date"];
         }
 
-
         $location_data = [];
         if ( isset( $params["location_ids"] ) ) {
             foreach ( $params["location_ids"] as $grid_id ){
@@ -132,7 +131,12 @@ class DT_Advanced_M2M_Tiles_Endpoints {
                     "last_assignment" => $last_assignments[$user["ID"]] ?? null,
                     "roles" => array_keys( $roles ),
                     "location" => null,
+                    "languages" => [],
                 ];
+                $user_languages = get_user_option( "user_languages", $user["ID"] );
+                if ( $user_languages ) {
+                    $u["languages"] = $user_languages;
+                }
                 //extra information for the dispatcher
                 $workload_status = $user["workload_status"] ?? null;
                 if ( $workload_status && isset( $workload_status_options[$workload_status]["color"] ) ) {

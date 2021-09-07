@@ -32,6 +32,10 @@
   let defined_list_section = $('#defined-lists')
   let search_section = $('#other-assign-to-typeahead')
   function display_dispatch_tab( tab = 'follow-up' ){
+    const contact_languages = (window.lodash.get(window.detailsSettings, "post_fields.languages"))
+      ? window.detailsSettings.post_fields.languages
+      : []
+
     let filters = `<a data-id="all" style="color: black; font-weight: bold">${window.lodash.escape(roles_settings.translations.all)}</a> | `
     let reasons_assigned = window.lodash.get( field_settings, "reason_assigned_to.default" );
 
@@ -47,11 +51,13 @@
         all: users_with_role.sort((a,b)=>a.name.localeCompare(b.name)),
         ready: users_with_role.filter(m=>m.status==='active'),
         recent: users_with_role.concat().sort((a,b)=>b.last_assignment-a.last_assignment),
+        language: users_with_role.filter(({ languages }) => languages.some(language => contact_languages.includes(language))),
         location: users_with_role.concat().filter(m=>m.location!==null).sort((a,b)=>a.location-b.location)
       }
       populate_user_list( users_with_role )
       filters += filter_options.ready.length ? `<a data-id="ready">${window.lodash.escape(roles_settings.translations.ready)}</a> | ` : ''
       filters += filter_options.recent.length ? `<a data-id="recent">${window.lodash.escape(roles_settings.translations.recent)}</a> | ` : ''
+      filters += filter_options.language.length ? `<a data-id="language">${window.lodash.escape(roles_settings.translations.language)}</a> | ` : ''
       filters += filter_options.location.length ? `<a data-id="location">${window.lodash.escape(roles_settings.translations.location)}</a> | ` : ''
       list_filters.html(filters)
 

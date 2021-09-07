@@ -30,6 +30,7 @@ class DT_Advanced_M2M_Tiles_Banners {
                     "recent" => __( "Recent", "disciple-tools-advanced-m2m-tiles" ),
                     "location" => __( "Location", "disciple-tools-advanced-m2m-tiles" ),
                     "assign" => __( "Assign", "disciple-tools-advanced-m2m-tiles" ),
+                    "language" => __( "Language", "disciple-tools-advanced-m2m-tiles" ),
                 ],
                 "dispatcher_id" => dt_get_base_user( true )
             ]
