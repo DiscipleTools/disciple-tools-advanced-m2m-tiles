@@ -146,22 +146,31 @@ class DT_Advanced_M2M_Tiles_Endpoints {
 
                 //get users with the same location grid.
                 $users_in_location = $wpdb->get_results( "
+                    SELECT user_id, meta_value as grid_id
+                    FROM wp_usermeta um
+                    WHERE um.meta_key = 'wp_location_grid'
+                    AND um.meta_value IN $match_location_ids
+                ", ARRAY_A );
+                //phpcs:enable
+
+                /*
+                    // Old SQL call
                     SELECT pm.meta_value as user_id, loc.meta_value as grid_id
                     FROM $wpdb->postmeta loc
                     JOIN $wpdb->postmeta pm ON ( pm.post_id = loc.post_id AND pm.meta_key = 'corresponds_to_user' )
                     WHERE loc.meta_key = 'location_grid' AND loc.meta_value IN $match_location_ids
-                ", ARRAY_A );
-                //phpcs:enable
+                */
 
                 foreach ( $location_names as $l ){
                     if ( isset( $levels[$l["grid_id"]] ) ) {
                         $levels[$l["grid_id"]]["name"] = $l["alt_name"];
                     }
                 }
+
                 //0 if the location is exact match. 1 if the matched location is the parent etc
                 foreach ( $users_in_location as $l ){
                     $level = (int) $location["level"] - $levels[$l["grid_id"]]["level"];
-                    if ( !isset( $location_data[$l["user_id"]] ) || $location_data[$l["user_id"]] > $level ){
+                    if ( !isset( $location_data[$l["user_id"]] ) || $location_data[$l["user_id"]]["level"] > $level ){
                         $location_data[$l["user_id"]] = [
                             "level" => $level,
                             "match_name" => $levels[$l["grid_id"]]["name"]
