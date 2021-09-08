@@ -1,6 +1,19 @@
 "use strict";
 (function($, roles_settings) {
 
+  const isDispatcher = window.lodash.get(roles_settings, "is_dispatcher") && roles_settings.is_dispatcher !== ""
+  const isAssignedToEnabled = window.lodash.get(roles_settings, "roles_settings.assigned_to.enabled") && roles_settings.roles_settings.assigned_to.enabled === true && isDispatcher
+
+  setTimeout(() => {
+    if ( isAssignedToEnabled ) {
+
+      const el = document.querySelector('.search_assigned_to')
+      const elClone = el.cloneNode(true);
+
+      el.parentNode.replaceChild(elClone, el)
+    }
+  }, 1000)
+
   let field_settings = window.detailsSettings.post_settings.fields
   let data = null
   if (window.lodash.get(window.detailsSettings, "post_fields.location_grid")){
@@ -111,6 +124,7 @@
       $('#reason_assigned_to').html(`(${selected_reason.label || ''})`)
       setStatus(response)
       $(`.js-typeahead-assigned_to`).val(window.lodash.escape(response.assigned_to.display)).blur()
+      $('#assigned_to_modal').foundation('close');
     })
   })
 
@@ -243,9 +257,19 @@
     $('#action-bar .action-text').toggle()
   })
 
-  $(document).on(  "click", `#assigned_to_t .typeahead__item`, function () {
-    $('#reason_assigned_to-modal').foundation('open');
-  })
+
+  /* Turn off typeahead dropdown button if assigned to  */
+  if ( isAssignedToEnabled ) {
+    $(document).on(  "click", `#assigned_to_t .typeahead__item`, function () {
+      $('#reason_assigned_to-modal').foundation('open');
+    })
+
+    $(document).on( "click", ".search_assigned_to", function (e) {
+      $('#assigned_to_modal').foundation('open');
+      display_dispatch_tab()
+    })
+  }
+
 
   /*
    * Reason assigned to modal update
