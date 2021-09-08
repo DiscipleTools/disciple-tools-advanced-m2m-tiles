@@ -11,7 +11,7 @@ class DT_Advanced_M2M_Tiles_Banners {
         //only load if on the details page
         if ( strpos( $path, 'contacts' ) === 0 && $path !== 'contacts' ){
             add_action( 'dt_record_top_above_details', [ $this, 'dt_banners' ], 10, 1 );
-            add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+            add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 1005 );
             add_action( 'dt_record_top_full_with', [ $this, 'top_tile' ], 10, 2 );
         }
     }
@@ -31,7 +31,8 @@ class DT_Advanced_M2M_Tiles_Banners {
                     "location" => __( "Location", "disciple-tools-advanced-m2m-tiles" ),
                     "assign" => __( "Assign", "disciple-tools-advanced-m2m-tiles" ),
                 ],
-                "dispatcher_id" => dt_get_base_user( true )
+                "dispatcher_id" => dt_get_base_user( true ),
+                "roles_settings" => get_option( "dt_roles_settings", [] ),
             ]
         );
     }
@@ -71,17 +72,10 @@ class DT_Advanced_M2M_Tiles_Banners {
 
         if ( dt_current_user_has_role( 'dispatcher' ) && isset( $roles_settings["assigned_to"]["enabled"] ) && $roles_settings["assigned_to"]["enabled"] !== false ) {
             ?>
-            <section class="small-12 grid-y grid-margin-y cell dispatcher-tile">
-                <div class="bordered-box">
+            <div class="reveal" id="assigned_to_modal" data-reveal>
+                <section class="small-12 grid-y grid-margin-y cell dispatcher-tile">
                     <div class="cell dt-filter-tabs">
-                        <h4 class="section-header"><?php esc_html_e( 'Assign For', "disciple-tools-advanced-m2m-tiles" ); ?> <span id="dispatch-tile-loader" style="display: inline-block; margin-left: 10px" class="loading-spinner"></span>
-                            <button class="section-chevron chevron_down">
-                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
-                            </button>
-                            <button class="section-chevron chevron_up">
-                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
-                            </button>
-                        </h4>
+                        <h4 class="section-header"><?php esc_html_e( 'Assign For', "disciple-tools-advanced-m2m-tiles" ); ?> <span id="dispatch-tile-loader" style="display: inline-block; margin-left: 10px" class="loading-spinner"></span></h4>
                         <div class="section-body">
                             <ul class="horizontal tabs" data-tabs id="filter-tabs">
                                 <?php if ( isset( $field_settings['reason_assigned_to']["default"] ) ) :
@@ -98,12 +92,10 @@ class DT_Advanced_M2M_Tiles_Banners {
 <!--                                    <a href="#other" data-field="other">Other</a>-->
 <!--                                </li>-->
                             </ul>
-
                             <div class="tabs-column-right users-select-panel" style="margin-top:20px; display: none">
                                 <div id="defined-lists" style="padding-top:0">
                                     <div class="grid-x grid-margin-x" style="margin-top:5px">
                                         <div class="medium-4 cell">
-
                                             <div class="input-group">
                                                 <input id="search-users-input" class="input-group-field" type="text" placeholder="Multipliers">
                                                 <div class="input-group-button">
@@ -117,10 +109,8 @@ class DT_Advanced_M2M_Tiles_Banners {
                                             </div>
                                             <div class="populated-list">
                                                 <!--users list is filled out by js-->
-
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                                 <div class="" id="other-assign-to-typeahead" style="display:none;">
@@ -132,8 +122,8 @@ class DT_Advanced_M2M_Tiles_Banners {
                                                 <div class="typeahead__field">
                                                     <span class="typeahead__query">
                                                         <input class="js-typeahead-assign input-height" dir="auto"
-                                                               name="assign[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', "disciple-tools-advanced-m2m-tiles" ) ?>"
-                                                               autocomplete="off">
+                                                                name="assign[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', "disciple-tools-advanced-m2m-tiles" ) ?>"
+                                                                autocomplete="off">
                                                     </span>
                                                     <span class="typeahead__button">
                                                         <button type="button" class="typeahead__image_button input-height" disabled>
@@ -148,7 +138,8 @@ class DT_Advanced_M2M_Tiles_Banners {
                             </div>
                         </div>
                     </div>
-            </section>
+                </section>
+            </div>
 
 
             <style type="text/css">
