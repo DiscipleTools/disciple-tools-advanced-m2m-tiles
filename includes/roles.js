@@ -55,7 +55,7 @@
         ready: users_with_role.filter(m=>m.status==='active'),
         recent: users_with_role.concat().sort((a,b)=>b.last_assignment-a.last_assignment),
         language: users_with_role.filter(({ languages }) => languages.some(language => contact_languages.includes(language))),
-        gender: users_with_role.filter(m=>m.gender === contact_gender.key),
+        gender: users_with_role.filter(m => contact_gender.label !== "" && m.gender === contact_gender.key),
         location: users_with_role.concat().filter(m=>m.location!==null).sort((a,b)=>a.location-b.location)
       }
       populate_user_list( users_with_role )

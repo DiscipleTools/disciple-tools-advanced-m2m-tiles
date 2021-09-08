@@ -189,8 +189,7 @@ class DT_Advanced_M2M_Tiles_Endpoints {
         $gender_query = $wpdb->get_results( "
             SELECT user_id, meta_value as gender
             from $wpdb->usermeta
-            WHERE meta_key = 'wp_user_gender'
-            GROUP by meta_value",
+            WHERE meta_key = 'wp_user_gender'",
         ARRAY_A );
 
         foreach ( $gender_query as $data ){
