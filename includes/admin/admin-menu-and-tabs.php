@@ -126,7 +126,7 @@ class DT_Advanced_M2M_Tiles_Menu {
 
     public function main_column() {
         $roles_settings = get_option( "dt_roles_settings", [] );
-        $assigned_to_enabled = isset( $roles_settings["assigned_to"]["enabled"] ) ? $roles_settings["assigned_to"]["enabled"] : false;
+        $assigned_to_enabled = !isset( $roles_settings["assigned_to"]["enabled"] ) || $roles_settings["assigned_to"]["enabled"] !== false;
         $my_actions_enabled = isset( $roles_settings["my_actions"]["enabled"] ) ? $roles_settings["my_actions"]["enabled"] : false;
         ?>
         <form action="" method="post">

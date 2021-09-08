@@ -34,7 +34,7 @@ class DT_Advanced_M2M_Tiles_Banners {
                     "gender" => __( "Gender", "disciple-tools-advanced-m2m-tiles" ),
                 ],
                 "dispatcher_id" => dt_get_base_user( true ),
-                "is_dispatcher" => dt_current_user_has_role( 'dispatcher' ),
+                "is_dispatcher" => current_user_can( 'dt_all_access_contacts' ) || dt_current_user_has_role( 'dispatcher' ),
                 "roles_settings" => get_option( "dt_roles_settings", [] ),
             ]
         );
@@ -44,7 +44,7 @@ class DT_Advanced_M2M_Tiles_Banners {
         $roles_settings = get_option( "dt_roles_settings", [] );
         $field_settings = apply_filters( "dt_get_post_type_settings", [], "contacts" )["fields"];
 
-        if ( isset( $roles_settings["assigned_to"]["enabled"] ) && $roles_settings["assigned_to"]["enabled"] !== false ) :?>
+        if ( !isset( $roles_settings["assigned_to"]["enabled"] ) || $roles_settings["assigned_to"]["enabled"] !== false ) :?>
             <div class="reveal" id="reason_assigned_to-modal" data-reveal>
                 <h3>
                     <?php echo esc_html( $field_settings["reason_assigned_to"]["name"] ?? '' )?>
@@ -73,10 +73,8 @@ class DT_Advanced_M2M_Tiles_Banners {
             </div>
         <?php endif;
 
-        $is_dispatcher = dt_current_user_has_role( 'dispatcher' );
-        $assigned_to_enabled = isset( $roles_settings["assigned_to"]["enabled"] ) && $roles_settings["assigned_to"]["enabled"] !== false;
-
-        if ( dt_current_user_has_role( 'dispatcher' ) && isset( $roles_settings["assigned_to"]["enabled"] ) && $roles_settings["assigned_to"]["enabled"] !== false ) {
+        $is_dispatcher = dt_current_user_has_role( 'dispatcher' ) || current_user_can( 'dt_all_access_contacts' );
+        if ( $is_dispatcher && !isset( $roles_settings["assigned_to"]["enabled"] ) || $roles_settings["assigned_to"]["enabled"] !== false ) {
             ?>
             <div class="reveal" id="assigned_to_modal" data-reveal>
                 <section class="small-12 grid-y grid-margin-y cell dispatcher-tile">
@@ -191,7 +189,7 @@ class DT_Advanced_M2M_Tiles_Banners {
                 <section class="small-12 cell">
                     <div class="bordered-box" id="action-bar">
                         <div class="record-name" title="<?php the_title_attribute(); ?>" style="display: flex">
-                            <div class="title"><?php the_title_attribute(); ?></div>
+<!--                            <div class="title">--><?php //the_title_attribute(); ?><!--</div>-->
                             <span id="action-bar-loader" style="display: inline-block; margin-left: 10px" class="loading-spinner"></span>
                             <button class="expand-text-descriptions">
                                 <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
@@ -273,8 +271,6 @@ class DT_Advanced_M2M_Tiles_Banners {
                     #action-bar .expand-text-descriptions {
                         display: none;
                         width: 20px;
-                        img {
-                        }
                     }
                     @media only screen and (max-width: 640px) {
                         #action-bar .record-name {
