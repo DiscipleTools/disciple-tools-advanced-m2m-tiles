@@ -145,12 +145,12 @@ class DT_Advanced_M2M_Tiles_Endpoints {
                 ", ARRAY_A);
 
                 //get users with the same location grid.
-                $users_in_location = $wpdb->get_results( "
+                $users_in_location = $wpdb->get_results( $wpdb->prepare("
                     SELECT user_id, meta_value as grid_id
                     FROM $wpdb->usermeta um
-                    WHERE um.meta_key LIKE '%_location_grid'
+                    WHERE um.meta_key = %s
                     AND um.meta_value IN $match_location_ids
-                ", ARRAY_A );
+                ", "{$wpdb->prefix}location_grid"), ARRAY_A );
                 //phpcs:enable
 
                 /*
@@ -186,10 +186,10 @@ class DT_Advanced_M2M_Tiles_Endpoints {
         global $wpdb;
         $gender_data = [];
 
-        $gender_query = $wpdb->get_results( "
+        $gender_query = $wpdb->get_results( $wpdb->prepare("
             SELECT user_id, meta_value as gender
             from $wpdb->usermeta
-            WHERE meta_key LIKE '%_user_gender'",
+            WHERE meta_key = %s", "{$wpdb->prefix}user_gender"),
         ARRAY_A );
 
         foreach ( $gender_query as $data ){
