@@ -37,7 +37,7 @@
       : []
     const contact_gender = (window.lodash.get(window.detailsSettings, "post_fields.gender"))
       ? window.detailsSettings.post_fields.gender
-      : { key: null }
+      : { key: null, label: "" }
 
     let filters = `<a data-id="all" style="color: black; font-weight: bold">${window.lodash.escape(roles_settings.translations.all)}</a> | `
     let reasons_assigned = window.lodash.get( field_settings, "reason_assigned_to.default" );
