@@ -32,6 +32,7 @@ class DT_Advanced_M2M_Tiles_Banners {
                     "assign" => __( "Assign", "disciple-tools-advanced-m2m-tiles" ),
                 ],
                 "dispatcher_id" => dt_get_base_user( true ),
+                "is_dispatcher" => dt_current_user_has_role( 'dispatcher' ),
                 "roles_settings" => get_option( "dt_roles_settings", [] ),
             ]
         );
@@ -69,6 +70,9 @@ class DT_Advanced_M2M_Tiles_Banners {
                 </button>
             </div>
         <?php endif;
+
+        $is_dispatcher = dt_current_user_has_role( 'dispatcher' );
+        $assigned_to_enabled = isset( $roles_settings["assigned_to"]["enabled"] ) && $roles_settings["assigned_to"]["enabled"] !== false;
 
         if ( dt_current_user_has_role( 'dispatcher' ) && isset( $roles_settings["assigned_to"]["enabled"] ) && $roles_settings["assigned_to"]["enabled"] !== false ) {
             ?>
@@ -139,6 +143,9 @@ class DT_Advanced_M2M_Tiles_Banners {
                         </div>
                     </div>
                 </section>
+                <button class="close-button" data-close aria-label="Close modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
 
 

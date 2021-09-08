@@ -1,7 +1,8 @@
 "use strict";
 (function($, roles_settings) {
 
-  const isAssignedToEnabled = window.lodash.get(roles_settings, "roles_settings.assigned_to.enabled") && roles_settings.roles_settings.assigned_to.enabled === true
+  const isDispatcher = window.lodash.get(roles_settings, "is_dispatcher") && roles_settings.is_dispatcher !== ""
+  const isAssignedToEnabled = window.lodash.get(roles_settings, "roles_settings.assigned_to.enabled") && roles_settings.roles_settings.assigned_to.enabled === true && isDispatcher
 
   setTimeout(() => {
     if ( isAssignedToEnabled ) {
