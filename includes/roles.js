@@ -256,12 +256,13 @@
     $('#action-bar .action-text').toggle()
   })
 
-  $(document).on(  "click", `#assigned_to_t .typeahead__item`, function () {
-    $('#reason_assigned_to-modal').foundation('open');
-  })
 
   /* Turn off typeahead dropdown button if assigned to  */
   if ( isAssignedToEnabled ) {
+    $(document).on(  "click", `#assigned_to_t .typeahead__item`, function () {
+      $('#reason_assigned_to-modal').foundation('open');
+    })
+
     $(document).on( "click", ".search_assigned_to", function (e) {
       $('#assigned_to_modal').foundation('open');
       display_dispatch_tab()
