@@ -275,10 +275,10 @@
       $('#reason_assigned_to-modal').foundation('open');
     })
 
-    // $(document).on( "click", ".search_assigned_to", function (e) {
-    //   $('#assigned_to_modal').foundation('open');
-    //   display_dispatch_tab()
-    // })
+    $(document).on( "click", ".search_assigned_to", function (e) {
+      $('#assigned_to_modal').foundation('open');
+      display_dispatch_tab()
+    })
   }
 
 
