@@ -3,7 +3,7 @@
  * Plugin Name: Disciple Tools - Advanced M2M Tiles
  * Plugin URI: https://github.com/DiscipleTools/disciple-tools-advanced-m2m-tiles
  * Description: Disciple Tools - Advanced M2M Tiles adds specific supporting tiles for different roles.
- * Version:  1.2
+ * Version:  2.0
  * Author URI: https://github.com/DiscipleTools
  * GitHub Plugin URI: https://github.com/DiscipleTools/disciple-tools-advanced-m2m-tiles
  * Requires at least: 4.7.0
