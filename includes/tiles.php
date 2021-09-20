@@ -24,15 +24,7 @@ class DT_Advanced_M2M_Tiles_Banners {
         wp_localize_script(
             'dt_roles_script', 'roles_settings', [
                 "template_dir_uri" => get_template_directory_uri(),
-                "translations" => [
-                    "all" => __( "All", "disciple-tools-advanced-m2m-tiles" ),
-                    "ready" => __( "Ready", "disciple-tools-advanced-m2m-tiles" ),
-                    "recent" => __( "Recent", "disciple-tools-advanced-m2m-tiles" ),
-                    "location" => __( "Location", "disciple-tools-advanced-m2m-tiles" ),
-                    "assign" => __( "Assign", "disciple-tools-advanced-m2m-tiles" ),
-                    "language" => __( "Language", "disciple-tools-advanced-m2m-tiles" ),
-                    "gender" => __( "Gender", "disciple-tools-advanced-m2m-tiles" ),
-                ],
+                "translations" => [],
                 "dispatcher_id" => dt_get_base_user( true ),
                 "is_dispatcher" => current_user_can( 'dt_all_access_contacts' ) || dt_current_user_has_role( 'dispatcher' ),
                 "roles_settings" => get_option( "dt_roles_settings", [] ),
@@ -73,110 +65,6 @@ class DT_Advanced_M2M_Tiles_Banners {
             </div>
         <?php endif;
 
-        $is_dispatcher = dt_current_user_has_role( 'dispatcher' ) || current_user_can( 'dt_all_access_contacts' );
-        if ( $is_dispatcher && !isset( $roles_settings["assigned_to"]["enabled"] ) || $roles_settings["assigned_to"]["enabled"] !== false ) {
-            ?>
-            <div class="reveal" id="assigned_to_modal" data-reveal>
-                <section class="small-12 grid-y grid-margin-y cell dispatcher-tile">
-                    <div class="cell dt-filter-tabs">
-                        <h4 class="section-header"><?php esc_html_e( 'Assign For', "disciple-tools-advanced-m2m-tiles" ); ?> <span id="dispatch-tile-loader" style="display: inline-block; margin-left: 10px" class="loading-spinner"></span></h4>
-                        <div class="section-body">
-                            <ul class="horizontal tabs" data-tabs id="filter-tabs">
-                                <?php if ( isset( $field_settings['reason_assigned_to']["default"] ) ) :
-                                    foreach ( $field_settings['reason_assigned_to']["default"] as $key => $value ) : ?>
-                                        <li class="tabs-title">
-                                            <a href="#<?php echo esc_html( $key ); ?>" data-field="<?php echo esc_html( $key ); ?>">
-                                                <img src="<?php echo esc_url( $value['icon'] ); ?>"
-                                                ><?php echo esc_html( $value["label"] ); ?>
-                                            </a>
-                                        </li>
-                                    <?php endforeach;
-                                endif;?>
-<!--                                <li class="tabs-title">-->
-<!--                                    <a href="#other" data-field="other">Other</a>-->
-<!--                                </li>-->
-                            </ul>
-                            <div class="tabs-column-right users-select-panel" style="margin-top:20px; display: none">
-                                <div id="defined-lists" style="padding-top:0">
-                                    <div class="grid-x grid-margin-x" style="margin-top:5px">
-                                        <div class="medium-4 cell">
-                                            <div class="input-group">
-                                                <input id="search-users-input" class="input-group-field" type="text" placeholder="Multipliers">
-                                                <div class="input-group-button">
-                                                    <button type="button" class="button hollow"><i class="fi-magnifying-glass"></i></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="medium-8 cell">
-                                            <div id="user-list-filters" style="margin-bottom:3px">
-                                                <!--filters is filled out by js-->
-                                            </div>
-                                            <div class="populated-list">
-                                                <!--users list is filled out by js-->
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="" id="other-assign-to-typeahead" style="display:none;">
-                                    <strong><?php esc_html_e( 'Search', "disciple-tools-advanced-m2m-tiles" ); ?></strong><br>
-                                    <div class="">
-                                        <var id="assign-result-container" class="result-container assign-result-container"></var>
-                                        <div id="assign_t" name="form-assign">
-                                            <div class="typeahead__container">
-                                                <div class="typeahead__field">
-                                                    <span class="typeahead__query">
-                                                        <input class="js-typeahead-assign input-height" dir="auto"
-                                                                name="assign[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', "disciple-tools-advanced-m2m-tiles" ) ?>"
-                                                                autocomplete="off">
-                                                    </span>
-                                                    <span class="typeahead__button">
-                                                        <button type="button" class="typeahead__image_button input-height" disabled>
-                                                            <i class="fi-magnifying-glass"></i>
-                                                        </button>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                <button class="close-button" data-close aria-label="Close modal" type="button">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-
-            <style type="text/css">
-                #filter-tabs img {
-                    height: 20px;
-                    width: 20px;
-                    display: inline-block;
-                    vertical-align: middle;
-                    margin-right: 2px;
-                }
-                .dispatcher-tile .populated-list .assigned-to-row > span {
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
-                    overflow: hidden;
-                }
-                .dispatcher-tile .populated-list .assigned-to-row:hover {
-                     background-color: #F2F2F2;
-                }
-                .dispatcher-tile .populated-list .assigned-to-row {
-                    padding: 5px 5px 0 5px;
-                    border-bottom: 1px solid rgba(128, 128, 128, 0.31);
-                }
-                .dispatcher-tile .populated-list {
-                    overflow-y: scroll;
-                    max-height: 250px;
-                }
-
-            </style>
-            <?php
-        }
     }
 
     public function top_tile( $post_type, $contact ){
