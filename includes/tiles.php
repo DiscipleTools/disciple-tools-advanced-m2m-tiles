@@ -20,6 +20,8 @@ class DT_Advanced_M2M_Tiles_Banners {
         if ( !is_singular( 'contacts' ) ){
             return;
         }
+        $wp_theme = wp_get_theme();
+        $version = $wp_theme->version;
         wp_enqueue_script( 'dt_roles_script', $this->plugin_url . $this->js_file, [ 'details', 'dt_contacts_access' ], filemtime( plugin_dir_path( __FILE__ ) . $this->js_file ), true );
         wp_localize_script(
             'dt_roles_script', 'roles_settings', [
@@ -36,6 +38,7 @@ class DT_Advanced_M2M_Tiles_Banners {
                 "dispatcher_id" => dt_get_base_user( true ),
                 "is_dispatcher" => current_user_can( 'dt_all_access_contacts' ) || dt_current_user_has_role( 'dispatcher' ),
                 "roles_settings" => get_option( "dt_roles_settings", [] ),
+                "is_assigned_to_deprecated" => version_compare( $version, '1.13.0', ">=" )
             ]
         );
     }
@@ -73,8 +76,10 @@ class DT_Advanced_M2M_Tiles_Banners {
             </div>
         <?php endif;
 
+        $wp_theme = wp_get_theme();
+        $version = $wp_theme->version;
         $is_dispatcher = dt_current_user_has_role( 'dispatcher' ) || current_user_can( 'dt_all_access_contacts' );
-        if ( $is_dispatcher && !isset( $roles_settings["assigned_to"]["enabled"] ) || $roles_settings["assigned_to"]["enabled"] !== false ) {
+        if ( $is_dispatcher && !isset( $roles_settings["assigned_to"]["enabled"] ) || $roles_settings["assigned_to"]["enabled"] !== false && !version_compare( $version, '1.13.0', ">=" ) ) {
             ?>
             <div class="reveal" id="assigned_to_modal" data-reveal>
                 <section class="small-12 grid-y grid-margin-y cell dispatcher-tile">
