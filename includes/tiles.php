@@ -79,7 +79,7 @@ class DT_Advanced_M2M_Tiles_Banners {
         $wp_theme = wp_get_theme();
         $version = $wp_theme->version;
         $is_dispatcher = dt_current_user_has_role( 'dispatcher' ) || current_user_can( 'dt_all_access_contacts' );
-        if ( $is_dispatcher && !isset( $roles_settings["assigned_to"]["enabled"] ) || $roles_settings["assigned_to"]["enabled"] !== false && !version_compare( $version, '1.13.0', ">=" ) ) {
+        if ( $is_dispatcher && ( !isset( $roles_settings["assigned_to"]["enabled"] ) || $roles_settings["assigned_to"]["enabled"] !== false ) && !version_compare( $version, '1.13.0', ">=" ) ) {
             ?>
             <div class="reveal" id="assigned_to_modal" data-reveal>
                 <section class="small-12 grid-y grid-margin-y cell dispatcher-tile">

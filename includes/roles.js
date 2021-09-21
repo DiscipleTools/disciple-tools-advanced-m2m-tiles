@@ -2,7 +2,7 @@
 (function($, roles_settings) {
 
   const isDispatcher = window.lodash.get(roles_settings, "is_dispatcher") && roles_settings.is_dispatcher !== ""
-  const isAssignedToEnabled = window.lodash.get(roles_settings, "roles_settings.assigned_to.enabled") === undefined || roles_settings.roles_settings.assigned_to.enabled === true && isDispatcher && ! roles_settings.is_assigned_to_deprecated
+  const isAssignedToEnabled = ( window.lodash.get(roles_settings, "roles_settings.assigned_to.enabled") === undefined || roles_settings.roles_settings.assigned_to.enabled === true ) && isDispatcher && ! roles_settings.is_assigned_to_deprecated
 
   setTimeout(() => {
     if ( isAssignedToEnabled ) {
