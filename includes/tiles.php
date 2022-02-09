@@ -188,7 +188,7 @@ class DT_Advanced_M2M_Tiles_Banners {
         if ( $post_type === "contacts" ) {
             $roles_settings = get_option( "dt_roles_settings", [] );
             if ( isset( $roles_settings["my_actions"]["enabled"] ) && $roles_settings["my_actions"]["enabled"] !== false
-                && ( dt_current_user_has_role( "multiplier" ) || dt_current_user_has_role( "marketer" ) ) )
+                && ( dt_current_user_has_role( "multiplier" ) || dt_current_user_has_role( "marketer" ) || current_user_can( "dt_all_access_contacts" ) ) )
             {
                 $contact_fields = DT_Posts::get_post_field_settings( "contacts" ); ?>
                 <section class="small-12 cell">
@@ -211,7 +211,7 @@ class DT_Advanced_M2M_Tiles_Banners {
                                 ><span class="action-text"><?php esc_html_e( 'Claim for follow-up', "disciple-tools-advanced-m2m-tiles" ); ?></span>
                             </button>
                         <?php endif; ?>
-                        <?php if ( dt_current_user_has_role( 'marketer' ) ) : ?>
+                        <?php if ( dt_current_user_has_role( "marketer" ) || current_user_can( "dt_all_access_contacts" ) ) : ?>
                             <button class="action-button" id="mark_dispatch_needed">
                                 <img src="<?php echo esc_url( $this->plugin_url . "images/arrow-check-up-solid.svg" ); ?>"
                                 ><span class="action-text"><?php esc_html_e( 'Ready for Dispatch', "disciple-tools-advanced-m2m-tiles" ); ?></span>
